@@ -5,44 +5,42 @@
 #include <iostream>
 #include "Grid.h"
 using namespace std;
+
 class BattleField
 {
 public:
+    BattleField();
 
-	BattleField();
-
-	Grid* grid;
-	Types::GridBox* PlayerCurrentLocation;
-	Types::GridBox* EnemyCurrentLocation;
-	list<Character>* AllPlayers;
-	shared_ptr<Character> PlayerCharacter;
-	//Character* PlayerCharacter;
-	shared_ptr<Character>* EnemyCharacter;
-	int currentTurn;
-	int numberOfPossibleTiles;
+    Grid* grid;
+    Types::GridBox* playerCurrentLocation;
+    Types::GridBox* enemyCurrentLocation;
+    list<Character>* allPlayers;
+    shared_ptr<Character> playerCharacter;
+    //Character* PlayerCharacter;
+    shared_ptr<Character>* enemyCharacter;
+    int currentTurn;
+    int numberOfPossibleTiles;
 
 
-	void Setup();
+    void Setup();
 
-	void GetPlayerChoice();
+    void GetPlayerChoice();
 
-	void CreatePlayerCharacter(int classIndex);
+    void CreatePlayerCharacter(int classIndex);
 
-	void CreateEnemyCharacter();
+    void CreateEnemyCharacter();
 
-	void StartGame();
+    void StartGame();
 
-	void StartTurn();
+    void StartTurn();
 
-	void HandleTurn();
+    void HandleTurn();
 
-	int GetRandomInt(int min, int max);
+    int GetRandomInt(int min, int max);
 
-	void AlocatePlayers();
+    void AlocatePlayers();
 
-	void AlocatePlayerCharacter();
+    void AlocatePlayerCharacter();
 
-	void AlocateEnemyCharacter();
+    void AlocateEnemyCharacter();
 };
-
-

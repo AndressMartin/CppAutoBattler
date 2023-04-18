@@ -6,39 +6,34 @@
 class Character
 {
 public:
-
-    Character(Types::CharacterClass charcaterClass);
+    Character(Types::CharacterClass characterClass);
     ~Character();
 
-    
-    float Health;
-    float BaseDamage;
-    float DamageMultiplier;
+    float health;
+    float baseDamage;
+    float damageMultiplier;
     //public GridBox currentBox;
-    int PlayerIndex;
+    int playerIndex;
     //public Character Target{ get; set; }
 
     Character* target;
 
-    bool IsDead;
-    char Icon;
+    bool isDead;
+    char icon;
 
     Types::GridBox currentBox;
 
     bool TakeDamage(float amount);
 
-    int getIndex(vector<Types::GridBox*> v, int index);
+    int GetIndex(vector<Types::GridBox*> v, int index);
 
     void Die();
 
-    void WalkTo(bool CanWalk);
+    void WalkTo(bool canWalk);
 
     void StartTurn(Grid* battlefield);
 
     bool CheckCloseTargets(Grid* battlefield);
 
     void Attack(Character* target);
-
-
 };
-

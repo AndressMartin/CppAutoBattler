@@ -9,7 +9,6 @@ Grid::Grid(int Lines, int Columns)
     //Console.WriteLine("The battle field has been created\n");
     for (int i = 0; i < Lines; i++)
     {
-
         for (int j = 0; j < Columns; j++)
         {
             Types::GridBox* newBox = new Types::GridBox(i, j, false, (Columns * i + j));
@@ -17,12 +16,11 @@ Grid::Grid(int Lines, int Columns)
             //Console.Write($"{newBox.Index}\n");
         }
     }
-	//drawBattlefield(Lines, Columns);
+    //drawBattlefield(Lines, Columns);
 }
 
-Grid::~Grid() 
+Grid::~Grid()
 {
-
 }
 
 void Grid::drawBattlefield(int Lines, int Columns)
