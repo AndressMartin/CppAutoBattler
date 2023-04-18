@@ -2,6 +2,7 @@
 #include "BattleField.h"
 #include "Types.h"
 #include "Character.h"
+#include "Utils.h"
 #include <iostream>
 #include "BattleField.h"
 #include <list>
@@ -23,6 +24,8 @@ void BattleField::Setup()
     cout << "Entering Setup()\n"; // Add this line
     const int choice = GetPlayerChoice();
     CreatePlayerCharacter(choice);
+    CreateEnemyCharacter();
+    // StartGame();
 }
 
 int BattleField::GetPlayerChoice()
@@ -35,7 +38,7 @@ int BattleField::GetPlayerChoice()
         cout << "Choose Between One of these Classes:\n";
         cout << "[1] Paladin, [2] Warrior, [3] Cleric, [4] Archer\n";
         cin >> choice;
-
+        choice--;
         // Check if input is valid
         if (cin.fail())
         {
@@ -54,32 +57,31 @@ int BattleField::GetPlayerChoice()
 
 void BattleField::CreatePlayerCharacter(int classIndex)
 {
-    Types::CharacterClass characterClass = static_cast<Types::CharacterClass>(classIndex);
-    cout << "Player Class Choice: " << Types::CharacterClass_ToString[characterClass];
+    Types::CharacterClass playerclass = static_cast<Types::CharacterClass>(classIndex);
+    cout << "Player Class Choice: " << Types::CharacterClass_ToString[playerclass] << endl;
 
-    //TODO: Restore this after fixing the error
-    // playerCharacter = make_shared<Character>(characterClass);
-    //
-    // playerCharacter->health = 100;
-    // playerCharacter->baseDamage = 20;
-    // playerCharacter->playerIndex = 0;
-    //
-    // CreateEnemyCharacter();
+    playerCharacter = make_shared<Character>(playerclass);
+    
+    playerCharacter->health = 100;
+    playerCharacter->baseDamage = 20;
+    playerCharacter->playerIndex = 0;
+    
+    cout << playerCharacter->health << endl << playerCharacter->baseDamage << endl << playerCharacter->playerIndex << endl; //TODO: Debugging
 }
 
 void BattleField::CreateEnemyCharacter()
 {
-    //randomly choose the enemy class and set up vital variables
+    int classIndex = Utils::GetRandomInt(0, 3);
+    Types::CharacterClass enemyClass = static_cast<Types::CharacterClass>(classIndex);
+    cout << "Enemy Class Choice: " << Types::CharacterClass_ToString[enemyClass] << endl;
+    
+    enemyCharacter = make_shared<Character>(enemyClass);
+    
+    enemyCharacter->health = 100;
+    enemyCharacter->baseDamage = 20;
+    enemyCharacter->playerIndex = 1;
 
-    int randomInteger = GetRandomInt(1, 4);
-    auto enemyClass = (Types::CharacterClass)randomInteger;
-    cout << "Enemy Class Choice: {enemyClass}";
-    //TODO: Restore this after fixing the error
-    // enemyCharacter = new Character(enemyClass);
-    // enemyCharacter->Health = 100;
-    // playerCharacter->baseDamage = 20;
-    // playerCharacter->playerIndex = 1;
-    StartGame();
+    cout << enemyCharacter->health << endl << enemyCharacter->baseDamage << endl << enemyCharacter->playerIndex << endl; //TODO: Debugging
 }
 
 void BattleField::StartGame()
@@ -137,13 +139,6 @@ void BattleField::HandleTurn()
     //     //ConsoleKeyInfo key = Console.ReadKey();
     //     StartTurn();
     // }
-}
-
-//TODO: Can be part of a UTILS class
-int BattleField::GetRandomInt(int min, int max)
-{
-    int index = GetRandomInt(min, max);
-    return index;
 }
 
 void BattleField::AllocatePlayers()

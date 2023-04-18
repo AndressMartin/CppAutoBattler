@@ -17,7 +17,7 @@ public:
     list<Character>* allPlayers;
     shared_ptr<Character> playerCharacter;
     //Character* PlayerCharacter;
-    shared_ptr<Character>* enemyCharacter;
+    shared_ptr<Character> enemyCharacter;
     int currentTurn;
     int numberOfPossibleTiles;
 
@@ -35,8 +35,6 @@ public:
     void StartTurn();
 
     void HandleTurn();
-
-    int GetRandomInt(int min, int max);
 
     void AllocatePlayers();
 

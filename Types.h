@@ -14,11 +14,8 @@ public:
         int index;
 
         GridBox(const int x, const int y, const bool occupied, const int index)
+        : xIndex(x), yIndex(y), occupied(occupied), index(index)
         {
-            xIndex = x;
-            yIndex = y;
-            this->occupied = occupied;
-            this->index = index;
         }
 
         bool operator==(const GridBox& other) const
