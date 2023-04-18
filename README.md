@@ -1,4 +1,4 @@
-﻿# Kokku Software Engineer Applicant Test
+# Kokku Software Engineer Applicant Test
 
 
 ## Auto Battle RPG
