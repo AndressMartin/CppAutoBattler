@@ -2,20 +2,19 @@
 class Types
 {
 public:
-
     struct GridBox
     {
         int xIndex;
         int yIndex;
-        bool ocupied;
-        int Index;
+        bool occupied;
+        int index;
 
-        GridBox(int x, int y, bool ocupied, int index)
+        GridBox(const int x, const int y, const bool occupied, const int index)
         {
             xIndex = x;
             yIndex = y;
-            ocupied = ocupied;
-            Index = index;
+            this->occupied = occupied;
+            this->index = index;
         }
     };
 
@@ -26,6 +25,4 @@ public:
         Cleric = 3,
         Archer = 4
     };
-
 };
-
