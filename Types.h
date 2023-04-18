@@ -16,6 +16,11 @@ public:
             this->occupied = occupied;
             this->index = index;
         }
+
+        bool operator==(const GridBox& other) const
+        {
+            return xIndex == other.xIndex && yIndex == other.yIndex && occupied == other.occupied && index == other.index;
+        }
     };
 
     enum CharacterClass

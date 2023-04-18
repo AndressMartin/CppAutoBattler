@@ -12,9 +12,7 @@ public:
     float health;
     float baseDamage;
     float damageMultiplier;
-    //public GridBox currentBox;
     int playerIndex;
-    //public Character Target{ get; set; }
 
     Character* target;
 
@@ -25,7 +23,7 @@ public:
 
     bool TakeDamage(float amount);
 
-    int GetIndex(vector<Types::GridBox*> v, int index);
+    int GetIndex(std::vector<Types::GridBox*> v, int index);
 
     void Die();
 

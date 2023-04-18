@@ -38,9 +38,9 @@ public:
 
     int GetRandomInt(int min, int max);
 
-    void AlocatePlayers();
+    void AllocatePlayers();
 
-    void AlocatePlayerCharacter();
+    void AllocatePlayerCharacter();
 
-    void AlocateEnemyCharacter();
+    void AllocateEnemyCharacter();
 };

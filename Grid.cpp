@@ -2,17 +2,17 @@
 #include "Types.h"
 
 
-Grid::Grid(int Lines, int Columns)
+Grid::Grid(int lines, int columns)
 {
-    xLenght = Lines;
-    yLength = Columns;
+    xLenght = lines;
+    yLength = columns;
     //Console.WriteLine("The battle field has been created\n");
-    for (int i = 0; i < Lines; i++)
+    for (int i = 0; i < lines; i++)
     {
-        for (int j = 0; j < Columns; j++)
+        for (int j = 0; j < columns; j++)
         {
-            Types::GridBox* newBox = new Types::GridBox(i, j, false, (Columns * i + j));
-            grids.insert(grids.end(), newBox);
+            auto newBox = new Types::GridBox(i, j, false, (columns * i + j));
+            // grids.insert(grids.end(), newBox); //TODO: Restore these lines
             //Console.Write($"{newBox.Index}\n");
         }
     }
@@ -23,22 +23,22 @@ Grid::~Grid()
 {
 }
 
-void Grid::drawBattlefield(int Lines, int Columns)
+void Grid::DrawBattlefield(int lines, int columns)
 {
-    for (int i = 0; i < Lines; i++)
+    for (int i = 0; i < lines; i++)
     {
-        for (int j = 0; j < Columns; j++)
+        for (int j = 0; j < columns; j++)
         {
-            Types::GridBox* currentgrid = new Types::GridBox();
-            if (currentgrid->ocupied)
-            {
-                //if()
-                printf("[X]\t");
-            }
-            else
-            {
-                printf("[ ]\t");
-            }
+            // Types::GridBox* currentGrid = new Types::GridBox(); //TODO: Restore these lines
+            // if (currentGrid->occupied)
+            // {
+            //     //if()
+            //     printf("[X]\t");
+            // }
+            // else
+            // {
+            //     printf("[ ]\t");
+            // }
         }
         printf("\n");
     }
