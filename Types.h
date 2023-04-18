@@ -1,4 +1,8 @@
 #pragma once
+#include <ostream>
+#include<iostream>
+#define STRINGIFY( name ) #name
+
 class Types
 {
 public:
@@ -25,9 +29,12 @@ public:
 
     enum CharacterClass
     {
-        Paladin = 1,
-        Warrior = 2,
-        Cleric = 3,
-        Archer = 4
+        Paladin,
+        Warrior,
+        Cleric,
+        Archer,
     };
+
+    // friend std::ostream& operator<<(std::ostream& os, const CharacterClass& characterClass);
+    static const char* CharacterClass_ToString[];
 };

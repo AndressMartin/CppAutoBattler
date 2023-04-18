@@ -21,10 +21,11 @@ BattleField::BattleField()
 void BattleField::Setup()
 {
     cout << "Entering Setup()\n"; // Add this line
-    GetPlayerChoice();
+    const int choice = GetPlayerChoice();
+    CreatePlayerCharacter(choice);
 }
 
-void BattleField::GetPlayerChoice()
+int BattleField::GetPlayerChoice()
 {
     int choice = 0;
     bool validChoice = false;
@@ -41,7 +42,6 @@ void BattleField::GetPlayerChoice()
             cout << "Invalid input. Please try again.\n";
             cin.clear(); // Clear the error state
             cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore newline
-            //Clear console();
         }
         else
         {
@@ -49,14 +49,13 @@ void BattleField::GetPlayerChoice()
         }
     }
     while (!validChoice);
-
-    cout << "It worked\n"; //TODO: Remove this
+    return choice;
 }
 
 void BattleField::CreatePlayerCharacter(int classIndex)
 {
-    auto characterClass = (Types::CharacterClass*)classIndex;
-    cout << "Player Class Choice: {characterClass}";
+    Types::CharacterClass characterClass = static_cast<Types::CharacterClass>(classIndex);
+    cout << "Player Class Choice: " << Types::CharacterClass_ToString[characterClass];
 
     //TODO: Restore this after fixing the error
     // playerCharacter = make_shared<Character>(characterClass);

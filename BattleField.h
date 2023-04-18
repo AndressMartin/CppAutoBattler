@@ -24,7 +24,7 @@ public:
 
     void Setup();
 
-    void GetPlayerChoice();
+    int GetPlayerChoice();
 
     void CreatePlayerCharacter(int classIndex);
 
