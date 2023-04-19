@@ -19,16 +19,14 @@ BattleField::BattleField()
 
     SetPlayers();
     
-    enemyCharacter->target = playerCharacter;
-    playerCharacter->target = enemyCharacter;
-    allPlayers->push_back(*playerCharacter);
-    allPlayers->push_back(*enemyCharacter);
     AllocateCharacter(playerCharacter);
     AllocateCharacter(enemyCharacter);
-    
     grid->DrawBattlefield();
-    
     StartTurn();
+}
+
+BattleField::~BattleField() {
+    delete allPlayers;
 }
 
 void BattleField::CreateBattlefield()
@@ -44,10 +42,15 @@ void BattleField::CreateBattlefield()
 
 void BattleField::SetPlayers()
 {
-    allPlayers = new list<Character>();
+    allPlayers = new list<Character*>();
     const int classChoice = GetPlayerChoice();
     CreatePlayerCharacter(classChoice);
     CreateEnemyCharacter();
+    
+    enemyCharacter->target = playerCharacter;
+    playerCharacter->target = enemyCharacter;
+    allPlayers->push_back(playerCharacter);
+    allPlayers->push_back(enemyCharacter);
 }
 
 int BattleField::GetPlayerChoice()
@@ -100,9 +103,10 @@ void BattleField::CreateEnemyCharacter()
 
 void BattleField::StartTurn()
 {
-    for (std::list<Character>::iterator it = allPlayers->begin(); it != allPlayers->end(); ++it)
+    for (std::list<Character*>::iterator it = allPlayers->begin(); it != allPlayers->end(); ++it)
     {
-        it->StartTurn(grid);
+        Character* character = *it;
+        character->StartTurn(grid);
     }
 
     currentTurn++;
@@ -112,30 +116,29 @@ void BattleField::StartTurn()
 void BattleField::HandleTurn()
 {
     //TODO: Restore this after fixing the error
-    // if (playerCharacter->health == 0)
-    // {
-    //     return;
-    // }
-    // else if (enemyCharacter->Health == 0)
-    // {
-    //     printf("\n");
-    //
-    //     // endgame?
-    //
-    //     printf("\n");
-    //
-    //     return;
-    // }
-    // else
-    // {
-    //     printf("\n");
-    //     printf("Click on any key to start the next turn...\n");
-    //     printf("\n");
-    //
-    //     //TODO
-    //     //ConsoleKeyInfo key = Console.ReadKey();
-    //     StartTurn();
-    // }
+    if (playerCharacter->health == 0)
+    {
+        return;
+    }
+    else if (enemyCharacter->health == 0)
+    {
+        printf("\n");
+    
+        // endgame?
+    
+        printf("\n");
+    
+        return;
+    }
+    else
+    {
+        printf("Press anything to continue to next turn.\n");
+        string input;
+        cin >> input;
+        printf("\n");
+    
+        StartTurn();
+    }
 }
 
 void BattleField::AllocateCharacter(Character* player)
@@ -143,7 +146,6 @@ void BattleField::AllocateCharacter(Character* player)
     std::vector<std::vector<Types::GridBox*>>* myGrid {&grid->grids};
     const int randomRow = Utils::GetRandomInt_MaxExclusive(0, myGrid->size());
     const int randomCol = Utils::GetRandomInt_MaxExclusive(0, (*myGrid)[randomRow].size());
-    // cout << randomRow << " " << randomCol << endl; //TODO: Debugging
     Types::GridBox* randomLocation = grid->grids[randomRow][randomCol];
     if (!randomLocation->occupied)
     {

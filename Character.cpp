@@ -4,12 +4,14 @@
 #include "Character.h"
 #include <vector>
 #include <algorithm>
+#include <iostream>
+
 #include "Classes.h"
 
 using namespace std;
 
-Character::Character(Classes::CharacterClass characterClass) //TODO: Check this struct initialization, do I really need to initialize currentBox?
-: currentBox(0, 0, false, 0), characterClass(characterClass)
+Character::Character(Classes::CharacterClass characterClass)
+: characterClass(characterClass)
 {
     static const Classes::ClassDatabase classDatabase;
     const Classes::ClassAttributes& attributes = classDatabase.GetAttributes(characterClass);
@@ -20,8 +22,7 @@ Character::Character(Classes::CharacterClass characterClass) //TODO: Check this 
     this->damageMultiplier = attributes.damageMultiplier;
 }
 
-Character::~Character()
-= default;
+Character::~Character() = default;
 
 bool Character::TakeDamage(float amount)
 {
@@ -41,86 +42,108 @@ void Character::Die()
 
 void Character::WalkTo(bool canWalk)
 {
+    
 }
 
 
 void Character::StartTurn(Grid* battlefield)
 {
-    // {
-    //     if (CheckCloseTargets(battlefield))
-    //     {
-    //         Attack(Character::target);
-    //
-    //
-    //         return;
-    //     }
-    //     else
-    //     {
-    //         // if there is no target close enough, calculates in wich direction this character should move to be closer to a possible target
-    //         
-    //         if (currentBox.xIndex > target->currentBox.xIndex)
-    //         {
-    //             auto it = std::find_if(battlefield->grids.begin(), battlefield->grids.end(), [index = currentBox.index - 1](const Types::GridBox& gridBox) {
-    //                 return gridBox.index == index;
-    //             });
-    //
-    //             if (it != battlefield->grids.end())
-    //             {
-    //                 currentBox.occupied = false;
-    //                 battlefield->grids[currentBox.index] = currentBox;
-    //
-    //                 currentBox = (battlefield->grids[currentBox.index - 1]);
-    //                 currentBox.occupied = true;
-    //                 battlefield->grids[currentBox.index] = currentBox;
-    //                 //Console.WriteLine($"Player {PlayerIndex} walked left\n");
-    //                 battlefield->DrawBattlefield(5, 5);
-    //
-    //                 return;
-    //             }
-    //         }
-    //         else if (currentBox.xIndex < target->currentBox.xIndex)
-    //         {
-    //             currentBox.occupied = false;
-    //             battlefield->grids[currentBox.index] = currentBox;
-    //             currentBox = (battlefield->grids[currentBox.index + 1]);
-    //             return;
-    //             battlefield->grids[currentBox.index] = currentBox;
-    //             //Console.WriteLine($"Player {PlayerIndex} walked right\n");
-    //             battlefield->DrawBattlefield(5, 5);
-    //         }
-    //
-    //         if (currentBox.yIndex > target->currentBox.yIndex)
-    //         {
-    //             battlefield->DrawBattlefield(5, 5);
-    //             currentBox.occupied = false;
-    //             battlefield->grids[currentBox.index] = currentBox;
-    //             currentBox = battlefield->grids[(currentBox.index - battlefield->xLenght)];
-    //             currentBox.occupied = true;
-    //             battlefield->grids[currentBox.index] = currentBox;
-    //             //Console.WriteLine($"PlayerB {PlayerIndex} walked up\n");
-    //             return;
-    //         }
-    //         else if (currentBox.yIndex < target->currentBox.yIndex)
-    //         {
-    //             currentBox.occupied = true;
-    //             battlefield->grids[currentBox.index] = currentBox;
-    //             currentBox = battlefield->grids[currentBox.index + battlefield->xLenght];
-    //             currentBox.occupied = false;
-    //             battlefield->grids[currentBox.index] = currentBox;
-    //             //Console.WriteLine($"Player {PlayerIndex} walked down\n");
-    //             battlefield->DrawBattlefield(5, 5);
-    //
-    //             return;
-    //         }
-    //     }
-    // }
+    if (CheckCloseTargets(battlefield))
+    {
+        Attack(target);
+    }
+    else
+    {
+        // if there is no target close enough, calculates in which direction this character should move to be closer to a possible target
+        if (currentBox->xIndex > target->currentBox->xIndex)
+        {
+            if (Types::GridBox* gridBox = battlefield->GetGridBox(currentBox->xIndex -1, currentBox->yIndex))
+            {
+                currentBox->occupied = false;
+                gridBox->occupied = true;
+                currentBox = gridBox;
+                std::cout << "Player " << 0 << " walked " << "LEFT" << '\n';
+            }
+        }
+        else if (currentBox->xIndex < target->currentBox->xIndex)
+        {
+            if (Types::GridBox* gridBox = battlefield->GetGridBox(currentBox->xIndex +1, currentBox->yIndex))
+            {
+                currentBox->occupied = false;
+                gridBox->occupied = true;
+                currentBox = gridBox;
+                std::cout << "Player " << 0 << " walked " << "RIGHT" << '\n';
+            }
+        }
+        else if (currentBox->yIndex > target->currentBox->yIndex)
+        {
+            if (Types::GridBox* gridBox = battlefield->GetGridBox(currentBox->xIndex, currentBox->yIndex -1))
+            {
+                currentBox->occupied = false;
+                gridBox->occupied = true;
+                currentBox = gridBox;
+                std::cout << "Player " << 0 << " walked " << "UP" << '\n';
+            }
+        }
+        else if (currentBox->yIndex < target->currentBox->yIndex)
+        {
+            if (Types::GridBox* gridBox = battlefield->GetGridBox(currentBox->xIndex, currentBox->yIndex +1))
+            {
+                currentBox->occupied = false;
+                gridBox->occupied = true;
+                currentBox = gridBox;
+                std::cout << "Player " << 0 << " walked " << "DOWN" << '\n';
+            }
+        }
+        battlefield->DrawBattlefield();
+    }
 }
 
 bool Character::CheckCloseTargets(Grid* battlefield)
 {
-    return 0; //TODO: Change this.
+    constexpr int directions[][2] = {
+        {-1, 0}, // LEFT
+        {1, 0},  // RIGHT
+        {0, 1},  // DOWN
+        {0, -1}  // UP
+    };
+
+    // std::cout << '\n' << currentBox->xIndex << ", " << currentBox->yIndex << '\n';
+    for (const auto& direction : directions)
+    {
+        // std::cout << "Directions: " << direction[0] << ", " << direction[1] << '\t';
+        if (CheckDirections(battlefield, currentBox->xIndex + direction[0], currentBox->yIndex + direction[1]))
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool Character::CheckDirections(Grid* battlefield, int x, int y)
+{
+    //Already checks for nullPtr.
+    // std::cout << x << ", " << y << '\t';
+    if (const auto gridBox = battlefield->GetGridBox(x, y))
+    {
+        if (gridBox->occupied)
+        {
+            // std::cout << "Occupied\n";
+            return true;
+        }
+        
+        // std::cout << "Free\n";
+        return false;
+    }
+    else
+    {
+        // std::cout << "INVALID\n";
+        return false;
+    }
 }
 
 void Character::Attack(Character* target)
 {
+    //TODO: Attack
 }

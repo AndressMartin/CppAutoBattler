@@ -19,7 +19,7 @@ public:
     char icon;
     
     Character* target;
-    Types::GridBox currentBox;
+    Types::GridBox* currentBox;
     Classes::CharacterClass characterClass;
 
     bool TakeDamage(float amount);
@@ -33,6 +33,7 @@ public:
     void StartTurn(Grid* battlefield);
 
     bool CheckCloseTargets(Grid* battlefield);
+    bool CheckDirections(Grid* battlefield, int x, int y);
 
     void Attack(Character* target);
 

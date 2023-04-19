@@ -11,11 +11,11 @@ class BattleField
 {
 public:
     BattleField();
-
+    ~BattleField();
     Grid* grid;
     Types::GridBox* playerCurrentLocation;
     Types::GridBox* enemyCurrentLocation;
-    list<Character>* allPlayers;
+    list<Character*>* allPlayers;
     Character* playerCharacter;
     Character* enemyCharacter;
     int currentTurn;

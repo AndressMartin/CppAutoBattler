@@ -13,7 +13,6 @@ public:
     int xLength;
     int yLength;
 
-    // prints the matrix that indicates the tiles of the battlefield
-    // void DrawBattlefield(int lines, int columns);
     void DrawBattlefield();
+    Types::GridBox* GetGridBox(int x, int y);
 };
