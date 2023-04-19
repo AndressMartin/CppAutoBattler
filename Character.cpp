@@ -7,13 +7,12 @@
 #include "Classes.h"
 
 using namespace std;
-using namespace Classes;
 
-Character::Character(Types::CharacterClass characterClass) //TODO: Check this struct initialization, do I really need to initialize currentBox?
+Character::Character(Classes::CharacterClass characterClass) //TODO: Check this struct initialization, do I really need to initialize currentBox?
 : currentBox(0, 0, false, 0), characterClass(characterClass)
 {
-    static const ClassDatabase classDatabase;
-    const ClassAttributes& attributes = classDatabase.GetAttributes(characterClass);
+    static const Classes::ClassDatabase classDatabase;
+    const Classes::ClassAttributes& attributes = classDatabase.GetAttributes(characterClass);
 
     this->characterClass = characterClass;
     this->health = attributes.health;

@@ -1,7 +1,4 @@
 #pragma once
-#include <ostream>
-#include<iostream>
-#define STRINGIFY( name ) #name
 
 class Types
 {
@@ -23,15 +20,4 @@ public:
             return xIndex == other.xIndex && yIndex == other.yIndex && occupied == other.occupied && index == other.index;
         }
     };
-
-    enum CharacterClass
-    {
-        Paladin,
-        Warrior,
-        Cleric,
-        Archer,
-    };
-
-    // friend std::ostream& operator<<(std::ostream& os, const CharacterClass& characterClass);
-    static const char* StringifyCharacterClass[];
 };

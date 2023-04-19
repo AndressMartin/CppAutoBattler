@@ -69,8 +69,8 @@ int BattleField::GetPlayerChoice()
 
 void BattleField::CreatePlayerCharacter(int classIndex)
 {
-    Types::CharacterClass playerclass = static_cast<Types::CharacterClass>(classIndex);
-    cout << "Player Class Choice: " << Types::StringifyCharacterClass[playerclass] << endl;
+    Classes::CharacterClass playerclass = static_cast<Classes::CharacterClass>(classIndex);
+    cout << "Player Class Choice: " << Classes::StringifyCharacterClass[playerclass] << endl;
 
     playerCharacter = new Character(playerclass);
     
@@ -80,8 +80,8 @@ void BattleField::CreatePlayerCharacter(int classIndex)
 void BattleField::CreateEnemyCharacter()
 {
     int classIndex = Utils::GetRandomInt(0, 3);
-    Types::CharacterClass enemyClass = static_cast<Types::CharacterClass>(classIndex);
-    cout << "Enemy Class Choice: " << Types::StringifyCharacterClass[enemyClass] << endl;
+    Classes::CharacterClass enemyClass = static_cast<Classes::CharacterClass>(classIndex);
+    cout << "Enemy Class Choice: " << Classes::StringifyCharacterClass[enemyClass] << endl;
     
     enemyCharacter = new Character(enemyClass);
 

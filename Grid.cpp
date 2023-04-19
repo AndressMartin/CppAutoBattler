@@ -1,6 +1,6 @@
 #include "Grid.h"
 #include "Types.h"
-
+#include <iostream>
 
 Grid::Grid(const int lines, const int columns)
     : grids(lines, std::vector<Types::GridBox*>(columns)), xLength(lines), yLength(columns)

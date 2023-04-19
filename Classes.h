@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include <map>
-#include "Types.h"
+#define STRINGIFY( name ) #name
 
 namespace Classes
 {
@@ -12,14 +12,24 @@ namespace Classes
         float damageMultiplier;
     };
 
+    enum CharacterClass
+    {
+        Paladin,
+        Warrior,
+        Cleric,
+        Archer,
+    };
+
     class ClassDatabase
     {
     public:
         ClassDatabase();
 
-        const ClassAttributes& GetAttributes(Types::CharacterClass characterClass) const;
+        const ClassAttributes& GetAttributes(CharacterClass characterClass) const;
 
     private:
-        std::map<Types::CharacterClass, ClassAttributes> classAttributes;
+        std::map<CharacterClass, ClassAttributes> classAttributes;
     };
+
+    extern const char* StringifyCharacterClass[];
 }

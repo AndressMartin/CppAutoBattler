@@ -1,12 +1,13 @@
 #pragma once
 #include "Grid.h"
 #include "Character.h"
+#include "Classes.h"
 #include "Types.h"
 
 class Character
 {
 public:
-    Character(Types::CharacterClass characterClass);
+    Character(Classes::CharacterClass characterClass);
     ~Character();
 
     float health;
@@ -19,7 +20,7 @@ public:
     
     Character* target;
     Types::GridBox currentBox;
-    Types::CharacterClass characterClass;
+    Classes::CharacterClass characterClass;
 
     bool TakeDamage(float amount);
 
