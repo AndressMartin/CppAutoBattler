@@ -16,29 +16,6 @@ namespace Classes
         return attributes.at(characterClass);
     }
 
-    std::ostream& operator<<(std::ostream& os, const CharacterClass& characterClass)
-    {
-        switch (characterClass)
-        {
-        case CharacterClass::Paladin:
-            os << "PALADIN";
-            break;
-        case CharacterClass::Warrior:
-            os << "WARRIOR";
-            break;
-        case CharacterClass::Archer:
-            os << "ARCHER";
-            break;
-        case CharacterClass::Cleric:
-            os << "CLERIC";
-            break;
-        default:
-            os << "UNKNOWN";
-            break;
-        }
-        return os;
-    }
-
     const char* StringifyCharacterClass[] =
     {
         STRINGIFY(Paladin),
