@@ -4,6 +4,7 @@
 #include <list>
 #include <iostream>
 #include "Grid.h"
+
 using namespace std;
 
 class BattleField
@@ -29,8 +30,6 @@ public:
     void CreatePlayerCharacter(int classIndex);
 
     void CreateEnemyCharacter();
-
-    void StartGame();
 
     void StartTurn();
 

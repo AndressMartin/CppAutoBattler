@@ -18,7 +18,17 @@ BattleField::BattleField()
     int numberOfPossibleTiles = grid->grids.size();
 
     SetPlayers();
-    StartGame();
+    
+    enemyCharacter->target = playerCharacter;
+    playerCharacter->target = enemyCharacter;
+    allPlayers->push_back(*playerCharacter);
+    allPlayers->push_back(*enemyCharacter);
+    AllocateCharacter(playerCharacter);
+    AllocateCharacter(enemyCharacter);
+    
+    grid->DrawBattlefield();
+    
+    StartTurn();
 }
 
 void BattleField::CreateBattlefield()
@@ -88,26 +98,8 @@ void BattleField::CreateEnemyCharacter()
     cout << enemyCharacter->health << endl << enemyCharacter->baseDamage << endl << enemyCharacter->playerIndex << endl; //TODO: Debugging
 }
 
-void BattleField::StartGame()
-{
-    //TODO: Restore this after fixing the error
-    //populates the character variables and targets
-    enemyCharacter->target = playerCharacter;
-    playerCharacter->target = enemyCharacter;
-    allPlayers->push_back(*playerCharacter);
-    allPlayers->push_back(*enemyCharacter);
-    AllocateCharacter(playerCharacter);
-    AllocateCharacter(enemyCharacter);
-    grid->DrawBattlefield();
-}
-
 void BattleField::StartTurn()
 {
-    // if (currentTurn == 0)
-    // {
-    //     //AllPlayers.Sort();  
-    // }
-
     for (std::list<Character>::iterator it = allPlayers->begin(); it != allPlayers->end(); ++it)
     {
         it->StartTurn(grid);
@@ -157,7 +149,7 @@ void BattleField::AllocateCharacter(Character* player)
     {
         playerCurrentLocation = randomLocation;
         randomLocation->occupied = true;
-        player->currentBox = *randomLocation;
+        player->currentBox = randomLocation;
         return;
     }
     AllocateCharacter(player);
