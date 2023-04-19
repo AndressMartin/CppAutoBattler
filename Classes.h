@@ -19,18 +19,24 @@ namespace Classes
         Warrior,
         Cleric,
         Archer,
+        CharacterClassCount, //Easy way to get the size of the enum
     };
 
     class ClassDatabase
     {
-    public:
+public:
         ClassDatabase();
 
         const ClassAttributes& GetAttributes(CharacterClass characterClass) const;
 
-    private:
+private:
         std::map<CharacterClass, ClassAttributes> attributes;
     };
 
     extern const char* StringifyCharacterClass[];
+
+    inline int GetCharacterClassCount()
+    {
+        return CharacterClassCount;
+    }
 }

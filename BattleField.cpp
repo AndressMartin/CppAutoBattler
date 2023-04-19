@@ -13,9 +13,6 @@ using namespace std;
 BattleField::BattleField()
 {
     CreateBattlefield();
-    
-    int currentTurn = 0;
-    int numberOfPossibleTiles = grid->grids.size();
 
     SetPlayers();
     
@@ -55,34 +52,46 @@ void BattleField::SetPlayers()
 
 int BattleField::GetPlayerChoice()
 {
-    int choice = 0;
+    int classChoice = 0;
     bool validChoice = false;
-    
+    int classesAmount = Classes::GetCharacterClassCount();
     do
     {
         cout << "Choose Between One of these Classes:\n";
-        cout << "[1] Paladin, [2] Warrior, [3] Cleric, [4] Archer\n";
-        cin >> choice;
-        choice--;
-        // Check if input is valid
-        if (cin.fail())
+        for (int i = 0; i < classesAmount; ++i)
         {
-            cout << "Invalid input. Please try again.\n";
-            cin.clear(); // Clear the error state
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore newline
+            cout << "[" << i + 1 << "] " << Classes::StringifyCharacterClass[i];
+            if (i < classesAmount - 1)
+            {
+                cout << ", ";
+            }
         }
-        else
-        {
-            validChoice = true;
-        }
+
+        cout << "\n";
+        cin >> classChoice;
+        classChoice--;
+
+        validChoice = IsValidClassChoice(classChoice, classesAmount);
     }
     while (!validChoice);
-    return choice;
+    return classChoice;
+}
+
+bool BattleField::IsValidClassChoice(int choice, int classesAmount)
+{
+    if (cin.fail() || choice < 0 || choice >= classesAmount)
+    {
+        cout << "Invalid input. Please try again.\n";
+        cin.clear(); // Clear the error state
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore newline
+        return false;
+    }
+    return true;
 }
 
 void BattleField::CreatePlayerCharacter(int classIndex)
 {
-    Classes::CharacterClass playerclass = static_cast<Classes::CharacterClass>(classIndex);
+    const auto playerclass = static_cast<Classes::CharacterClass>(classIndex);
     cout << "Player Class Choice: " << Classes::StringifyCharacterClass[playerclass] << endl;
 
     playerCharacter = new Character(playerclass);
