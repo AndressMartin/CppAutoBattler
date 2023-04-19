@@ -16,7 +16,6 @@ public:
     Types::GridBox* enemyCurrentLocation;
     list<Character>* allPlayers;
     Character* playerCharacter;
-    //Character* PlayerCharacter;
     Character* enemyCharacter;
     int currentTurn;
     int numberOfPossibleTiles;
@@ -37,9 +36,5 @@ public:
 
     void HandleTurn();
 
-    void AllocatePlayers();
-
-    void AllocatePlayerCharacter();
-
-    void AllocateEnemyCharacter();
+    void AllocateCharacter(Character* player);
 };

@@ -104,9 +104,9 @@ void BattleField::StartGame()
     playerCharacter->target = enemyCharacter;
     allPlayers->push_back(*playerCharacter);
     allPlayers->push_back(*enemyCharacter);
+    AllocateCharacter(playerCharacter);
+    AllocateCharacter(enemyCharacter);
     grid->DrawBattlefield();
-    // AllocatePlayers();
-    // StartTurn();
 }
 
 void BattleField::StartTurn()
@@ -154,49 +154,19 @@ void BattleField::HandleTurn()
     // }
 }
 
-void BattleField::AllocatePlayers()
+void BattleField::AllocateCharacter(Character* player)
 {
-    AllocatePlayerCharacter();
-}
-
-void BattleField::AllocatePlayerCharacter()
-{
-    // int random = 0; //TODO: Not being used
-    // auto lFront = grid->grids.begin();
-    // advance(lFront, random);
-    // Types::GridBox* randomLocation = &*lFront;
-    //
-    // if (!randomLocation->occupied)
-    // {
-    //     //Types::GridBox* PlayerCurrentLocation = RandomLocation;
-    //     playerCurrentLocation = &*lFront;
-    //     lFront->occupied = true;
-    //     playerCharacter->currentBox = *lFront;
-    //     AllocateEnemyCharacter();
-    // }
-    // else
-    // {
-    //     AllocatePlayerCharacter();
-    // }
-}
-
-void BattleField::AllocateEnemyCharacter()
-{
-    //TODO: Restore this after fixing the error
-    // int random = 24; //TODO: Not being used
-    // auto lFront = grid->grids.begin();
-    // advance(lFront, random);
-    // Types::GridBox* randomLocation = &*lFront;
-    //
-    // if (!randomLocation->occupied)
-    // {
-    //     enemyCurrentLocation = &*lFront;
-    //     lFront->occupied = true;
-    //     enemyCharacter->currentBox = *lFront;
-    //     grid->drawBattlefield(5, 5);
-    // }
-    // else
-    // {
-    //     AllocateEnemyCharacter();
-    // }
+    std::vector<std::vector<Types::GridBox*>>* myGrid {&grid->grids};
+    const int randomRow = Utils::GetRandomInt_MaxExclusive(0, myGrid->size());
+    const int randomCol = Utils::GetRandomInt_MaxExclusive(0, (*myGrid)[randomRow].size());
+    // cout << randomRow << " " << randomCol << endl; //TODO: Debugging
+    Types::GridBox* randomLocation = grid->grids[randomRow][randomCol];
+    if (!randomLocation->occupied)
+    {
+        playerCurrentLocation = randomLocation;
+        randomLocation->occupied = true;
+        player->currentBox = *randomLocation;
+        return;
+    }
+    AllocateCharacter(player);
 }
