@@ -124,7 +124,6 @@ void BattleField::StartTurn()
 
 void BattleField::HandleTurn()
 {
-    //TODO: Restore this after fixing the error
     if (playerCharacter->health == 0)
     {
         return;

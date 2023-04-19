@@ -5,6 +5,8 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
+#include <random>
+#include "Utils.h"
 
 #include "Classes.h"
 
@@ -19,25 +21,26 @@ Character::Character(Classes::CharacterClass characterClass)
     this->characterClass = characterClass;
     this->health = attributes.health;
     this->baseDamage = attributes.baseDamage;
-    this->damageMultiplier = attributes.damageMultiplier;
+    this->critModifier = attributes.critMultiplier;
+    this->critChance = attributes.critChance;
     this->icon = attributes.icon;
 }
 
 Character::~Character() = default;
 
-bool Character::TakeDamage(float amount)
+void Character::TakeDamage(float amount)
 {
-    if ((health -= baseDamage) <= 0)
+    cout << Classes::StringifyCharacterClass[characterClass] << " took " << amount << " damage!\n";
+    if ((health -= amount) <= 0)
     {
         Die();
-        return true;
     }
-    return false;
 }
 
 void Character::Die()
 {
-    // TODO >> kill
+    std::cout << Classes::StringifyCharacterClass[characterClass] << " is dead!\n";
+    //TODO >> kill
     //TODO >> end the game?
 }
 
@@ -63,7 +66,7 @@ void Character::StartTurn(Grid* battlefield)
                 currentBox->occupied = nullptr;
                 gridBox->occupied = tempPtr;
                 currentBox = gridBox;
-                std::cout << "Player " << 0 << " walked " << "LEFT" << '\n';
+                std::cout << "Player " << Classes::StringifyCharacterClass[characterClass] << " walked " << "LEFT" << '\n';
             }
         }
         else if (currentBox->xIndex < target->currentBox->xIndex)
@@ -74,7 +77,7 @@ void Character::StartTurn(Grid* battlefield)
                 currentBox->occupied = nullptr;
                 gridBox->occupied = tempPtr;
                 currentBox = gridBox;
-                std::cout << "Player " << 0 << " walked " << "RIGHT" << '\n';
+                std::cout << "Player " << Classes::StringifyCharacterClass[characterClass] << " walked " << "RIGHT" << '\n';
             }
         }
         else if (currentBox->yIndex > target->currentBox->yIndex)
@@ -85,7 +88,7 @@ void Character::StartTurn(Grid* battlefield)
                 currentBox->occupied = nullptr;
                 gridBox->occupied = tempPtr;
                 currentBox = gridBox;
-                std::cout << "Player " << 0 << " walked " << "UP" << '\n';
+                std::cout << "Player " << Classes::StringifyCharacterClass[characterClass] << " walked " << "UP" << '\n';
             }
         }
         else if (currentBox->yIndex < target->currentBox->yIndex)
@@ -96,7 +99,7 @@ void Character::StartTurn(Grid* battlefield)
                 currentBox->occupied = nullptr;
                 gridBox->occupied = tempPtr;
                 currentBox = gridBox;
-                std::cout << "Player " << 0 << " walked " << "DOWN" << '\n';
+                std::cout << "Player " << Classes::StringifyCharacterClass[characterClass] << " walked " << "DOWN" << '\n';
             }
         }
         battlefield->DrawBattlefield();
@@ -149,5 +152,38 @@ bool Character::CheckDirections(Grid* battlefield, int x, int y)
 
 void Character::Attack(Character* target)
 {
-    //TODO: Attack
+    AttackOutcome outcome = CalculateAttackOutcome();
+    float damage;
+
+    switch (outcome)
+    {
+        case AttackOutcome::Miss:
+            cout << Classes::StringifyCharacterClass[characterClass] << " missed!\n";
+            return;
+        case AttackOutcome::Hit:
+            damage = baseDamage;
+            cout << Classes::StringifyCharacterClass[characterClass] << " hits for " << damage << "!\n";
+            break;
+        case AttackOutcome::Crit:
+            damage = baseDamage * critModifier;
+            cout << Classes::StringifyCharacterClass[characterClass] << " CRITS for " << damage << "!\n";
+            break;
+    }
+
+    target->TakeDamage(damage);
+}
+
+AttackOutcome Character::CalculateAttackOutcome()
+{
+    const int randomValue = Utils::GetRandomInt(-10, 100);
+    
+    if (randomValue <= 0)
+    {
+        return AttackOutcome::Miss;
+    }
+    if (randomValue < 100 - critChance)
+    {
+        return AttackOutcome::Hit;
+    }
+    return AttackOutcome::Crit;
 }

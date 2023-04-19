@@ -9,7 +9,8 @@ namespace Classes
     {
         float health;
         float baseDamage;
-        float damageMultiplier;
+        float critMultiplier;
+        int critChance;
         char icon;
     };
 
