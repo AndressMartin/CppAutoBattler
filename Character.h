@@ -17,10 +17,10 @@ public:
     Character(Classes::CharacterClass characterClass);
     ~Character();
 
-    float health;
-    float baseDamage;
+    int health;
+    int baseDamage;
     float critModifier;
-    float critChance;
+    int critChance;
     int playerIndex;
 
     bool isDead;

@@ -124,14 +124,14 @@ void BattleField::StartTurn()
 
 void BattleField::HandleTurn()
 {
-    if (playerCharacter->health <= 0)
+    if (playerCharacter->isDead)
     {
-        //TODO: Defeat
+        cout << "You lost! :(\nTry again though, PS: Paladin is kinda broken!";
         return;
     }
-    if (enemyCharacter->health <= 0)
+    if (enemyCharacter->isDead)
     {
-        //TODO: Victory
+        cout << "You won! :]\n";
         cout << "\n\n";
         return;
     }

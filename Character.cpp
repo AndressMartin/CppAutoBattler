@@ -1,13 +1,13 @@
-#include "Grid.h"
-#include "Character.h"
-#include "Types.h"
-#include "Character.h"
 #include <vector>
 #include <algorithm>
 #include <iostream>
 #include <random>
+#include <cmath>
+#include "Grid.h"
+#include "Character.h"
+#include "Types.h"
+#include "Character.h"
 #include "Utils.h"
-
 #include "Classes.h"
 
 using namespace std;
@@ -40,8 +40,7 @@ void Character::TakeDamage(float amount)
 void Character::Die()
 {
     std::cout << Classes::StringifyCharacterClass[characterClass] << " is dead!\n";
-    //TODO >> kill
-    //TODO >> end the game?
+    isDead = true;
 }
 
 void Character::WalkTo(bool canWalk)
@@ -52,6 +51,8 @@ void Character::WalkTo(bool canWalk)
 
 void Character::StartTurn(Grid* battlefield)
 {
+    if(target->isDead)
+        return;
     if (CheckCloseTargets(battlefield))
     {
         Attack(target);
@@ -139,7 +140,6 @@ bool Character::CheckDirections(Grid* battlefield, int x, int y)
             // std::cout << "Occupied\n";
             return true;
         }
-        
         // std::cout << "Free\n";
         return false;
     }
@@ -153,7 +153,7 @@ bool Character::CheckDirections(Grid* battlefield, int x, int y)
 void Character::Attack(Character* target)
 {
     AttackOutcome outcome = CalculateAttackOutcome();
-    float damage;
+    int damage;
 
     switch (outcome)
     {
@@ -165,7 +165,7 @@ void Character::Attack(Character* target)
             cout << Classes::StringifyCharacterClass[characterClass] << " hits for " << damage << "!\n";
             break;
         case AttackOutcome::Crit:
-            damage = baseDamage * critModifier;
+            damage = ceil(baseDamage * critModifier);
             cout << Classes::StringifyCharacterClass[characterClass] << " CRITS for " << damage << "!\n";
             break;
     }

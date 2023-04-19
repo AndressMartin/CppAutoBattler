@@ -7,8 +7,8 @@ namespace Classes
 {
     struct ClassAttributes
     {
-        float health;
-        float baseDamage;
+        int health;
+        int baseDamage;
         float critMultiplier;
         int critChance;
         char icon;
