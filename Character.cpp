@@ -26,6 +26,13 @@ Character::Character(Classes::CharacterClass characterClass)
     this->icon = attributes.icon;
 }
 
+constexpr int directions[][2] = {
+    {-1, 0}, // LEFT
+    {1, 0},  // RIGHT
+    {0, 1},  // DOWN
+    {0, -1}  // UP
+};
+
 Character::~Character() = default;
 
 void Character::TakeDamage(float amount)
@@ -43,11 +50,23 @@ void Character::Die()
     isDead = true;
 }
 
-void Character::WalkTo(bool canWalk)
+bool Character::CanWalk(Grid* battlefield, int x, int y)
 {
-    
+    Types::GridBox* gridBox = battlefield->GetGridBox(currentBox->xIndex + x, currentBox->yIndex + y);
+    return gridBox && !gridBox->occupied; //Already checks for nullPtr
 }
 
+void Character::WalkTo(Grid* battlefield, int x, int y)
+{
+    Types::GridBox* gridBox = battlefield->GetGridBox(currentBox->xIndex + x, currentBox->yIndex + y);
+    if (gridBox)
+    {
+        const auto tempPtr = currentBox->occupied;
+        currentBox->occupied = nullptr;
+        gridBox->occupied = tempPtr;
+        currentBox = gridBox;
+    }
+}
 
 void Character::StartTurn(Grid* battlefield)
 {
@@ -58,63 +77,39 @@ void Character::StartTurn(Grid* battlefield)
         Attack(target);
     }
     else // Calculates in which direction this character should move to be closer to a possible target
-    {
-        if (currentBox->xIndex > target->currentBox->xIndex)
         {
-            if (Types::GridBox* gridBox = battlefield->GetGridBox(currentBox->xIndex -1, currentBox->yIndex))
-            {
-                auto tempPtr = currentBox->occupied;
-                currentBox->occupied = nullptr;
-                gridBox->occupied = tempPtr;
-                currentBox = gridBox;
-                std::cout << "Player " << Classes::StringifyCharacterClass[characterClass] << " walked " << "LEFT" << '\n';
+        int bestDirectionIndex = -1;
+        int bestDistance = INT_MAX; //Will be replaced by the distance found
+        
+        for (int i = 0; i < 4; ++i) {
+            const int newX = currentBox->xIndex + directions[i][0];
+            const int newY = currentBox->yIndex + directions[i][1];
+            if (CanWalk(battlefield, directions[i][0], directions[i][1])) {
+                const int distance = abs(newX - target->currentBox->xIndex) + abs(newY - target->currentBox->yIndex);
+                if (distance < bestDistance) {
+                    bestDistance = distance;
+                    bestDirectionIndex = i;
+                }
             }
         }
-        else if (currentBox->xIndex < target->currentBox->xIndex)
-        {
-            if (Types::GridBox* gridBox = battlefield->GetGridBox(currentBox->xIndex +1, currentBox->yIndex))
-            {
-                auto tempPtr = currentBox->occupied;
-                currentBox->occupied = nullptr;
-                gridBox->occupied = tempPtr;
-                currentBox = gridBox;
-                std::cout << "Player " << Classes::StringifyCharacterClass[characterClass] << " walked " << "RIGHT" << '\n';
-            }
+
+        if (bestDirectionIndex >= 0) {
+            WalkTo(battlefield, directions[bestDirectionIndex][0], directions[bestDirectionIndex][1]);
+            cout << "Player " << Classes::StringifyCharacterClass[characterClass] << " walked ";
+            if (bestDirectionIndex == 0) cout << "LEFT";
+            else if (bestDirectionIndex == 1) cout << "RIGHT";
+            else if (bestDirectionIndex == 2) cout << "DOWN";
+            else if (bestDirectionIndex == 3) cout << "UP";
+            cout << '\n';
         }
-        else if (currentBox->yIndex > target->currentBox->yIndex)
-        {
-            if (Types::GridBox* gridBox = battlefield->GetGridBox(currentBox->xIndex, currentBox->yIndex -1))
-            {
-                auto tempPtr = currentBox->occupied;
-                currentBox->occupied = nullptr;
-                gridBox->occupied = tempPtr;
-                currentBox = gridBox;
-                std::cout << "Player " << Classes::StringifyCharacterClass[characterClass] << " walked " << "UP" << '\n';
-            }
-        }
-        else if (currentBox->yIndex < target->currentBox->yIndex)
-        {
-            if (Types::GridBox* gridBox = battlefield->GetGridBox(currentBox->xIndex, currentBox->yIndex +1))
-            {
-                auto tempPtr = currentBox->occupied;
-                currentBox->occupied = nullptr;
-                gridBox->occupied = tempPtr;
-                currentBox = gridBox;
-                std::cout << "Player " << Classes::StringifyCharacterClass[characterClass] << " walked " << "DOWN" << '\n';
-            }
-        }
+        else {cout << "Something went wrong with the movement\n";}
+
         battlefield->DrawBattlefield();
     }
 }
 
 bool Character::CheckCloseTargets(Grid* battlefield)
 {
-    constexpr int directions[][2] = {
-        {-1, 0}, // LEFT
-        {1, 0},  // RIGHT
-        {0, 1},  // DOWN
-        {0, -1}  // UP
-    };
 
     // std::cout << '\n' << currentBox->xIndex << ", " << currentBox->yIndex << '\n';
     for (const auto& direction : directions)

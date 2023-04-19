@@ -35,8 +35,10 @@ public:
     int GetIndex(std::vector<Types::GridBox*> v, int index);
 
     void Die();
-
-    void WalkTo(bool canWalk);
+    
+    bool CanWalk(Grid* battlefield, int x, int y);
+    
+    void WalkTo(Grid* battlefield, int x, int y);
 
     void StartTurn(Grid* battlefield);
 
