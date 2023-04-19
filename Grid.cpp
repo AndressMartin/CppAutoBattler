@@ -1,46 +1,52 @@
 #include "Grid.h"
 #include "Types.h"
+#include <iostream>
 
-
-Grid::Grid(int Lines, int Columns)
+Grid::Grid(const int lines, const int columns)
+    : grids(lines, std::vector<Types::GridBox*>(columns)), xLength(columns), yLength(lines)
 {
-    xLenght = Lines;
-    yLength = Columns;
-    //Console.WriteLine("The battle field has been created\n");
-    for (int i = 0; i < Lines; i++)
+    std::cout << grids.size() << '\n';
+    std::cout << grids[0].size() << '\n';
+    for (int j = 0; j < xLength; j++)
     {
-        for (int j = 0; j < Columns; j++)
+        for (int i = 0; i < yLength; i++)
         {
-            Types::GridBox* newBox = new Types::GridBox(i, j, false, (Columns * i + j));
-            grids.insert(grids.end(), newBox);
-            //Console.Write($"{newBox.Index}\n");
+            auto newBox = new Types::GridBox(j, i, false, columns * j + i);
+            grids[i][j] = newBox;
+            // std::cout << '\n' << columns * i + j << '\n';
         }
     }
-    //drawBattlefield(Lines, Columns);
 }
 
 Grid::~Grid()
-{
-}
+= default;
 
-void Grid::drawBattlefield(int Lines, int Columns)
+void Grid::DrawBattlefield()
 {
-    for (int i = 0; i < Lines; i++)
+    for (int i = 0; i < grids.size(); i++)
     {
-        for (int j = 0; j < Columns; j++)
+        for (int j = 0; j < grids[0].size(); j++)
         {
-            Types::GridBox* currentgrid = new Types::GridBox();
-            if (currentgrid->ocupied)
+            if (grids[i][j]->occupied)
             {
-                //if()
-                printf("[X]\t");
+                std::cout << "[X]\t";
             }
             else
             {
-                printf("[ ]\t");
+                std::cout << "[ ]\t";
             }
         }
-        printf("\n");
+        std::cout << "\n";
     }
-    printf("\n");
+    std::cout << "\n";
+}
+
+Types::GridBox* Grid::GetGridBox(int x, int y)
+{
+    if (y >= yLength || x >= xLength || x < 0 || y < 0)
+    {
+        return nullptr;
+    }
+
+    return grids[y][x];
 }

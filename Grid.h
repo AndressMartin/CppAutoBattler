@@ -5,14 +5,14 @@
 class Grid
 {
 public:
-    Grid(int Lines, int Columns);
+    Grid(int lines, int columns);
     ~Grid();
 
-    std::vector<Types::GridBox> grids;
+    std::vector<std::vector<Types::GridBox*>> grids;
 
-    int xLenght;
+    int xLength;
     int yLength;
 
-    // prints the matrix that indicates the tiles of the battlefield
-    void drawBattlefield(int Lines, int Columns);
+    void DrawBattlefield();
+    Types::GridBox* GetGridBox(int x, int y);
 };

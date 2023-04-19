@@ -1,31 +1,30 @@
 #pragma once
 #include "Grid.h"
 #include "Character.h"
+#include "Classes.h"
 #include "Types.h"
 
 class Character
 {
 public:
-    Character(Types::CharacterClass characterClass);
+    Character(Classes::CharacterClass characterClass);
     ~Character();
 
     float health;
     float baseDamage;
     float damageMultiplier;
-    //public GridBox currentBox;
     int playerIndex;
-    //public Character Target{ get; set; }
-
-    Character* target;
 
     bool isDead;
     char icon;
-
-    Types::GridBox currentBox;
+    
+    Character* target;
+    Types::GridBox* currentBox;
+    Classes::CharacterClass characterClass;
 
     bool TakeDamage(float amount);
 
-    int GetIndex(vector<Types::GridBox*> v, int index);
+    int GetIndex(std::vector<Types::GridBox*> v, int index);
 
     void Die();
 
@@ -34,6 +33,9 @@ public:
     void StartTurn(Grid* battlefield);
 
     bool CheckCloseTargets(Grid* battlefield);
+    bool CheckDirections(Grid* battlefield, int x, int y);
 
     void Attack(Character* target);
+
+    // friend std::ostream& operator<<(std::ostream& os, const Character& characterClass);
 };

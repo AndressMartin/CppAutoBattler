@@ -4,43 +4,36 @@
 #include <list>
 #include <iostream>
 #include "Grid.h"
+
 using namespace std;
 
 class BattleField
 {
 public:
     BattleField();
-
+    ~BattleField();
     Grid* grid;
     Types::GridBox* playerCurrentLocation;
     Types::GridBox* enemyCurrentLocation;
-    list<Character>* allPlayers;
-    shared_ptr<Character> playerCharacter;
-    //Character* PlayerCharacter;
-    shared_ptr<Character>* enemyCharacter;
+    list<Character*>* allPlayers;
+    Character* playerCharacter;
+    Character* enemyCharacter;
     int currentTurn;
     int numberOfPossibleTiles;
 
+    void CreateBattlefield();
+    
+    void SetPlayers();
 
-    void Setup();
-
-    void GetPlayerChoice();
+    int GetPlayerChoice();
 
     void CreatePlayerCharacter(int classIndex);
 
     void CreateEnemyCharacter();
 
-    void StartGame();
-
     void StartTurn();
 
     void HandleTurn();
 
-    int GetRandomInt(int min, int max);
-
-    void AlocatePlayers();
-
-    void AlocatePlayerCharacter();
-
-    void AlocateEnemyCharacter();
+    void AllocateCharacter(Character* player);
 };
