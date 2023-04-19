@@ -2,6 +2,8 @@
 #include "Types.h"
 #include <iostream>
 
+#include "Character.h"
+
 Grid::Grid(const int lines, const int columns)
     : grids(lines, std::vector<Types::GridBox*>(columns)), xLength(columns), yLength(lines)
 {
@@ -11,7 +13,7 @@ Grid::Grid(const int lines, const int columns)
     {
         for (int i = 0; i < yLength; i++)
         {
-            auto newBox = new Types::GridBox(j, i, false, columns * j + i);
+            auto newBox = new Types::GridBox(j, i, nullptr, columns * j + i);
             grids[i][j] = newBox;
             // std::cout << '\n' << columns * i + j << '\n';
         }
@@ -29,7 +31,7 @@ void Grid::DrawBattlefield()
         {
             if (grids[i][j]->occupied)
             {
-                std::cout << "[X]\t";
+                std::cout << "[" << grids[i][j]->occupied->icon << "]\t";
             }
             else
             {

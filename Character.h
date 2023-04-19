@@ -4,15 +4,23 @@
 #include "Classes.h"
 #include "Types.h"
 
+enum class AttackOutcome
+{
+    Miss,
+    Hit,
+    Crit
+};
+
 class Character
 {
 public:
     Character(Classes::CharacterClass characterClass);
     ~Character();
 
-    float health;
-    float baseDamage;
-    float damageMultiplier;
+    int health;
+    int baseDamage;
+    float critModifier;
+    int critChance;
     int playerIndex;
 
     bool isDead;
@@ -22,13 +30,15 @@ public:
     Types::GridBox* currentBox;
     Classes::CharacterClass characterClass;
 
-    bool TakeDamage(float amount);
+    void TakeDamage(float amount);
 
     int GetIndex(std::vector<Types::GridBox*> v, int index);
 
     void Die();
-
-    void WalkTo(bool canWalk);
+    
+    bool CanWalk(Grid* battlefield, int x, int y);
+    
+    void WalkTo(Grid* battlefield, int x, int y);
 
     void StartTurn(Grid* battlefield);
 
@@ -36,6 +46,5 @@ public:
     bool CheckDirections(Grid* battlefield, int x, int y);
 
     void Attack(Character* target);
-
-    // friend std::ostream& operator<<(std::ostream& os, const Character& characterClass);
+    AttackOutcome CalculateAttackOutcome();
 };

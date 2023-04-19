@@ -1,5 +1,7 @@
 #pragma once
 
+class Character; //Forward declaration to avoid cyclical references with Character.h
+
 class Types
 {
 public:
@@ -7,10 +9,10 @@ public:
     {
         int xIndex;
         int yIndex;
-        bool occupied;
+        Character* occupied;
         int index;
 
-        GridBox(const int x, const int y, const bool occupied, const int index)
+        GridBox(const int x, const int y, Character* occupied, const int index)
         : xIndex(x), yIndex(y), occupied(occupied), index(index)
         {
         }

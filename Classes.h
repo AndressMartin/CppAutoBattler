@@ -7,9 +7,11 @@ namespace Classes
 {
     struct ClassAttributes
     {
-        float health;
-        float baseDamage;
-        float damageMultiplier;
+        int health;
+        int baseDamage;
+        float critMultiplier;
+        int critChance;
+        char icon;
     };
 
     enum CharacterClass
@@ -18,18 +20,25 @@ namespace Classes
         Warrior,
         Cleric,
         Archer,
+        Mage,
+        CharacterClassCount, //Easy way to get the size of the enum
     };
 
     class ClassDatabase
     {
-    public:
+public:
         ClassDatabase();
 
         const ClassAttributes& GetAttributes(CharacterClass characterClass) const;
 
-    private:
-        std::map<CharacterClass, ClassAttributes> classAttributes;
+private:
+        std::map<CharacterClass, ClassAttributes> attributes;
     };
 
     extern const char* StringifyCharacterClass[];
+
+    inline int GetCharacterClassCount()
+    {
+        return CharacterClassCount;
+    }
 }

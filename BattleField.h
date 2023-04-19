@@ -22,18 +22,12 @@ public:
     int numberOfPossibleTiles;
 
     void CreateBattlefield();
-    
     void SetPlayers();
-
+    bool IsValidClassChoice(int choice, int classesAmount);
     int GetPlayerChoice();
-
     void CreatePlayerCharacter(int classIndex);
-
     void CreateEnemyCharacter();
-
     void StartTurn();
-
     void HandleTurn();
-
     void AllocateCharacter(Character* player);
 };
