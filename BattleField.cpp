@@ -124,29 +124,24 @@ void BattleField::StartTurn()
 
 void BattleField::HandleTurn()
 {
-    if (playerCharacter->health == 0)
+    if (playerCharacter->health <= 0)
     {
+        //TODO: Defeat
         return;
     }
-    else if (enemyCharacter->health == 0)
+    if (enemyCharacter->health <= 0)
     {
-        printf("\n");
-    
-        // endgame?
-    
-        printf("\n");
-    
+        //TODO: Victory
+        cout << "\n\n";
         return;
     }
-    else
-    {
-        printf("Press anything to continue to next turn.\n");
-        string input;
-        cin >> input;
-        printf("\n");
     
-        StartTurn();
-    }
+    cout << "Press Enter to continue to next turn.\n";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore any remaining input in the buffer
+    cin.get();
+    cout << "\n\n";
+    
+    StartTurn();
 }
 
 void BattleField::AllocateCharacter(Character* player)
