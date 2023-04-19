@@ -150,7 +150,7 @@ void BattleField::AllocateCharacter(Character* player)
     if (!randomLocation->occupied)
     {
         playerCurrentLocation = randomLocation;
-        randomLocation->occupied = true;
+        randomLocation->occupied = player;
         player->currentBox = randomLocation;
         return;
     }

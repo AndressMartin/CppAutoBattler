@@ -20,6 +20,7 @@ Character::Character(Classes::CharacterClass characterClass)
     this->health = attributes.health;
     this->baseDamage = attributes.baseDamage;
     this->damageMultiplier = attributes.damageMultiplier;
+    this->icon = attributes.icon;
 }
 
 Character::~Character() = default;
@@ -52,15 +53,15 @@ void Character::StartTurn(Grid* battlefield)
     {
         Attack(target);
     }
-    else
+    else // Calculates in which direction this character should move to be closer to a possible target
     {
-        // if there is no target close enough, calculates in which direction this character should move to be closer to a possible target
         if (currentBox->xIndex > target->currentBox->xIndex)
         {
             if (Types::GridBox* gridBox = battlefield->GetGridBox(currentBox->xIndex -1, currentBox->yIndex))
             {
-                currentBox->occupied = false;
-                gridBox->occupied = true;
+                auto tempPtr = currentBox->occupied;
+                currentBox->occupied = nullptr;
+                gridBox->occupied = tempPtr;
                 currentBox = gridBox;
                 std::cout << "Player " << 0 << " walked " << "LEFT" << '\n';
             }
@@ -69,8 +70,9 @@ void Character::StartTurn(Grid* battlefield)
         {
             if (Types::GridBox* gridBox = battlefield->GetGridBox(currentBox->xIndex +1, currentBox->yIndex))
             {
-                currentBox->occupied = false;
-                gridBox->occupied = true;
+                auto tempPtr = currentBox->occupied;
+                currentBox->occupied = nullptr;
+                gridBox->occupied = tempPtr;
                 currentBox = gridBox;
                 std::cout << "Player " << 0 << " walked " << "RIGHT" << '\n';
             }
@@ -79,8 +81,9 @@ void Character::StartTurn(Grid* battlefield)
         {
             if (Types::GridBox* gridBox = battlefield->GetGridBox(currentBox->xIndex, currentBox->yIndex -1))
             {
-                currentBox->occupied = false;
-                gridBox->occupied = true;
+                auto tempPtr = currentBox->occupied;
+                currentBox->occupied = nullptr;
+                gridBox->occupied = tempPtr;
                 currentBox = gridBox;
                 std::cout << "Player " << 0 << " walked " << "UP" << '\n';
             }
@@ -89,8 +92,9 @@ void Character::StartTurn(Grid* battlefield)
         {
             if (Types::GridBox* gridBox = battlefield->GetGridBox(currentBox->xIndex, currentBox->yIndex +1))
             {
-                currentBox->occupied = false;
-                gridBox->occupied = true;
+                auto tempPtr = currentBox->occupied;
+                currentBox->occupied = nullptr;
+                gridBox->occupied = tempPtr;
                 currentBox = gridBox;
                 std::cout << "Player " << 0 << " walked " << "DOWN" << '\n';
             }

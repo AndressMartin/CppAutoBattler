@@ -10,6 +10,7 @@ namespace Classes
         float health;
         float baseDamage;
         float damageMultiplier;
+        char icon;
     };
 
     enum CharacterClass
@@ -28,7 +29,7 @@ namespace Classes
         const ClassAttributes& GetAttributes(CharacterClass characterClass) const;
 
     private:
-        std::map<CharacterClass, ClassAttributes> classAttributes;
+        std::map<CharacterClass, ClassAttributes> attributes;
     };
 
     extern const char* StringifyCharacterClass[];
