@@ -26,7 +26,8 @@ Character::Character(Classes::CharacterClass characterClass)
     this->icon = attributes.icon;
 }
 
-constexpr int directions[][2] = {
+constexpr int directions[][2] =
+{
     {-1, 0}, // LEFT
     {1, 0},  // RIGHT
     {0, 1},  // DOWN
