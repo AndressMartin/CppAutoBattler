@@ -1,8 +1,10 @@
 #pragma once
+#include <memory>
 #include "Grid.h"
 #include "Character.h"
 #include "Classes.h"
 #include "Types.h"
+#include "StatusEffects/BaseStatusEffect.h"
 
 enum class AttackOutcome
 {
@@ -43,8 +45,14 @@ public:
     void StartTurn(Grid* battlefield);
 
     bool CheckCloseTargets(Grid* battlefield);
+    
     bool CheckDirections(Grid* battlefield, int x, int y);
 
     void Attack(Character* target);
+    
     AttackOutcome CalculateAttackOutcome();
+    
+    void ApplyStatusEffect(std::unique_ptr<StatusEffects::BaseStatusEffect> effect);
+    
+    void ApplyStatusEffects();
 };

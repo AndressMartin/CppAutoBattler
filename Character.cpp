@@ -26,6 +26,8 @@ Character::Character(Classes::CharacterClass characterClass)
     this->icon = attributes.icon;
 }
 
+Character::~Character() = default;
+
 constexpr int directions[][2] =
 {
     {-1, 0}, // LEFT
@@ -33,8 +35,6 @@ constexpr int directions[][2] =
     {0, 1},  // DOWN
     {0, -1}  // UP
 };
-
-Character::~Character() = default;
 
 void Character::TakeDamage(float amount)
 {

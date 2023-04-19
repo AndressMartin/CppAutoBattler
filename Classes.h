@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <map>
+#include <string>
 #define STRINGIFY( name ) #name
 
 namespace Classes
@@ -12,6 +13,7 @@ namespace Classes
         float critMultiplier;
         int critChance;
         char icon;
+        std::string description;
     };
 
     enum CharacterClass

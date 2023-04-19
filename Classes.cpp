@@ -11,7 +11,8 @@ namespace Classes
             14,
             1.5f,
             7,
-            'P'
+            'P',
+            "Can choose to heal themselves and choose to defend. Can inflict \"fearful\" status, causing opponent to heal you instead.",
         };
         attributes[Warrior] =
         {
@@ -19,7 +20,8 @@ namespace Classes
             12,
             2.0f,
             15,
-            'X'
+            'X',
+            "Has good chance to hit twice and can choose to defend. Can inflict bleeding. Gets stronger as life depletes.",
         };
         attributes[Cleric] =
         {
@@ -27,7 +29,8 @@ namespace Classes
             6,
             1.5f,
             5,
-            'C'
+            'C',
+            "Can choose to heal themselves. Can inflict \"cursed\" status, making ghosts appear to hit the target.",
         };
         attributes[Archer] =
         {
@@ -35,7 +38,8 @@ namespace Classes
             10,
             2.5f,
             28,
-            ')'
+            ')',
+            "Can hit from three squares away. High evasion rate. Can inflict poison.",
         };
         attributes[Mage] =
         {
@@ -43,7 +47,8 @@ namespace Classes
             12,
             3.0f,
             12,
-            '0'
+            '0',
+            "Can hit from two squares away, and conjure meteors. Can inflict a random magical status.",
         };
     }
 

@@ -22,4 +22,15 @@ public:
             return xIndex == other.xIndex && yIndex == other.yIndex && occupied == other.occupied && index == other.index;
         }
     };
+
+    enum StatusEffect
+    {
+        Poisoned,
+        Bleeding,
+        Cursed,
+        Fearful,
+        Confused,
+        Burning,
+        Frozen,
+    };
 };
