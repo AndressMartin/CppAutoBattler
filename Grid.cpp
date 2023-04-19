@@ -2,45 +2,41 @@
 #include "Types.h"
 
 
-Grid::Grid(int lines, int columns)
+Grid::Grid(const int lines, const int columns)
+    : grids(lines, std::vector<Types::GridBox*>(columns)), xLength(lines), yLength(columns)
 {
-    xLenght = lines;
-    yLength = columns;
-    //Console.WriteLine("The battle field has been created\n");
-    for (int i = 0; i < lines; i++)
+    std::cout << grids.size() << '\n';
+    std::cout << grids[0].size() << '\n';
+    for (int i = 0; i < xLength; i++)
     {
-        for (int j = 0; j < columns; j++)
+        for (int j = 0; j < yLength; j++)
         {
-            auto newBox = new Types::GridBox(i, j, false, (columns * i + j));
-            // grids.insert(grids.end(), newBox); //TODO: Restore these lines
-            //Console.Write($"{newBox.Index}\n");
+            auto newBox = new Types::GridBox(i, j, false, columns * i + j);
+            grids[i][j] = newBox;
+            // Console.Write($"{newBox.Index}\n");
         }
     }
-    //drawBattlefield(Lines, Columns);
 }
 
 Grid::~Grid()
-{
-}
+= default;
 
-void Grid::DrawBattlefield(int lines, int columns)
+void Grid::DrawBattlefield()
 {
-    for (int i = 0; i < lines; i++)
+    for (int i = 0; i < grids.size(); i++)
     {
-        for (int j = 0; j < columns; j++)
+        for (int j = 0; j < grids[0].size(); j++)
         {
-            // Types::GridBox* currentGrid = new Types::GridBox(); //TODO: Restore these lines
-            // if (currentGrid->occupied)
-            // {
-            //     //if()
-            //     printf("[X]\t");
-            // }
-            // else
-            // {
-            //     printf("[ ]\t");
-            // }
+            if (grids[i][j]->occupied)
+            {
+                std::cout << "[X]\t";
+            }
+            else
+            {
+                std::cout << "[ ]\t";
+            }
         }
-        printf("\n");
+        std::cout << "\n";
     }
-    printf("\n");
+    std::cout << "\n";
 }

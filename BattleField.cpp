@@ -12,20 +12,32 @@ using namespace std;
 
 BattleField::BattleField()
 {
-    grid = new Grid(5, 5);
-    allPlayers = new list<Character>();
+    CreateBattlefield();
+    
     int currentTurn = 0;
     int numberOfPossibleTiles = grid->grids.size();
-    Setup();
+
+    SetPlayers();
+    StartGame();
 }
 
-void BattleField::Setup()
+void BattleField::CreateBattlefield()
 {
-    cout << "Entering Setup()\n"; // Add this line
-    const int choice = GetPlayerChoice();
-    CreatePlayerCharacter(choice);
+    int x = 0;
+    int y = 0;
+    cout << "Insert the number of rows" << endl;
+    cin >> x;
+    cout << "Insert the number of collumns" << endl;
+    cin >> y;
+    grid = new Grid(x, y);
+}
+
+void BattleField::SetPlayers()
+{
+    allPlayers = new list<Character>();
+    const int classChoice = GetPlayerChoice();
+    CreatePlayerCharacter(classChoice);
     CreateEnemyCharacter();
-    // StartGame();
 }
 
 int BattleField::GetPlayerChoice()
@@ -58,9 +70,9 @@ int BattleField::GetPlayerChoice()
 void BattleField::CreatePlayerCharacter(int classIndex)
 {
     Types::CharacterClass playerclass = static_cast<Types::CharacterClass>(classIndex);
-    cout << "Player Class Choice: " << Types::CharacterClass_ToString[playerclass] << endl;
+    cout << "Player Class Choice: " << Types::StringifyCharacterClass[playerclass] << endl;
 
-    playerCharacter = make_shared<Character>(playerclass);
+    playerCharacter = new Character(playerclass);
     
     playerCharacter->health = 100;
     playerCharacter->baseDamage = 20;
@@ -73,9 +85,9 @@ void BattleField::CreateEnemyCharacter()
 {
     int classIndex = Utils::GetRandomInt(0, 3);
     Types::CharacterClass enemyClass = static_cast<Types::CharacterClass>(classIndex);
-    cout << "Enemy Class Choice: " << Types::CharacterClass_ToString[enemyClass] << endl;
+    cout << "Enemy Class Choice: " << Types::StringifyCharacterClass[enemyClass] << endl;
     
-    enemyCharacter = make_shared<Character>(enemyClass);
+    enemyCharacter = new Character(enemyClass);
     
     enemyCharacter->health = 100;
     enemyCharacter->baseDamage = 20;
@@ -88,12 +100,13 @@ void BattleField::StartGame()
 {
     //TODO: Restore this after fixing the error
     //populates the character variables and targets
-    // enemyCharacter->target = playerCharacter;
-    // playerCharacter->target = enemyCharacter;
-    // allPlayers->push_back(playerCharacter);
-    // allPlayers->push_back(enemyCharacter);
-    AllocatePlayers();
-    StartTurn();
+    enemyCharacter->target = playerCharacter;
+    playerCharacter->target = enemyCharacter;
+    allPlayers->push_back(*playerCharacter);
+    allPlayers->push_back(*enemyCharacter);
+    grid->DrawBattlefield();
+    // AllocatePlayers();
+    // StartTurn();
 }
 
 void BattleField::StartTurn()
@@ -148,23 +161,23 @@ void BattleField::AllocatePlayers()
 
 void BattleField::AllocatePlayerCharacter()
 {
-    int random = 0; //TODO: Not being used
-    auto lFront = grid->grids.begin();
-    advance(lFront, random);
-    Types::GridBox* randomLocation = &*lFront;
-
-    if (!randomLocation->occupied)
-    {
-        //Types::GridBox* PlayerCurrentLocation = RandomLocation;
-        playerCurrentLocation = &*lFront;
-        lFront->occupied = true;
-        playerCharacter->currentBox = *lFront;
-        AllocateEnemyCharacter();
-    }
-    else
-    {
-        AllocatePlayerCharacter();
-    }
+    // int random = 0; //TODO: Not being used
+    // auto lFront = grid->grids.begin();
+    // advance(lFront, random);
+    // Types::GridBox* randomLocation = &*lFront;
+    //
+    // if (!randomLocation->occupied)
+    // {
+    //     //Types::GridBox* PlayerCurrentLocation = RandomLocation;
+    //     playerCurrentLocation = &*lFront;
+    //     lFront->occupied = true;
+    //     playerCharacter->currentBox = *lFront;
+    //     AllocateEnemyCharacter();
+    // }
+    // else
+    // {
+    //     AllocatePlayerCharacter();
+    // }
 }
 
 void BattleField::AllocateEnemyCharacter()

@@ -15,14 +15,15 @@ public:
     Types::GridBox* playerCurrentLocation;
     Types::GridBox* enemyCurrentLocation;
     list<Character>* allPlayers;
-    shared_ptr<Character> playerCharacter;
+    Character* playerCharacter;
     //Character* PlayerCharacter;
-    shared_ptr<Character> enemyCharacter;
+    Character* enemyCharacter;
     int currentTurn;
     int numberOfPossibleTiles;
 
-
-    void Setup();
+    void CreateBattlefield();
+    
+    void SetPlayers();
 
     int GetPlayerChoice();
 

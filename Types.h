@@ -33,5 +33,5 @@ public:
     };
 
     // friend std::ostream& operator<<(std::ostream& os, const CharacterClass& characterClass);
-    static const char* CharacterClass_ToString[];
+    static const char* StringifyCharacterClass[];
 };

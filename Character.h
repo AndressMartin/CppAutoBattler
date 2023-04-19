@@ -14,12 +14,12 @@ public:
     float damageMultiplier;
     int playerIndex;
 
-    Character* target;
-
     bool isDead;
     char icon;
-
+    
+    Character* target;
     Types::GridBox currentBox;
+    Types::CharacterClass characterClass;
 
     bool TakeDamage(float amount);
 
@@ -34,4 +34,6 @@ public:
     bool CheckCloseTargets(Grid* battlefield);
 
     void Attack(Character* target);
+
+    // friend std::ostream& operator<<(std::ostream& os, const Character& characterClass);
 };

@@ -8,11 +8,12 @@ public:
     Grid(int lines, int columns);
     ~Grid();
 
-    std::vector<Types::GridBox> grids;
+    std::vector<std::vector<Types::GridBox*>> grids;
 
-    int xLenght;
+    int xLength;
     int yLength;
 
     // prints the matrix that indicates the tiles of the battlefield
-    void DrawBattlefield(int lines, int columns);
+    // void DrawBattlefield(int lines, int columns);
+    void DrawBattlefield();
 };

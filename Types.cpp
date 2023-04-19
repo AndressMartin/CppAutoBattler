@@ -23,7 +23,7 @@ std::ostream& operator<<(std::ostream& os, const Types::CharacterClass& characte
     return os;
 }
 
-const char* Types::CharacterClass_ToString[] =
+const char* Types::StringifyCharacterClass[] =
 {
     STRINGIFY(Paladin),
     STRINGIFY(Warrior),
