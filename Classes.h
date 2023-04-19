@@ -20,6 +20,7 @@ namespace Classes
         Warrior,
         Cleric,
         Archer,
+        Mage,
         CharacterClassCount, //Easy way to get the size of the enum
     };
 
