@@ -74,10 +74,6 @@ void BattleField::CreatePlayerCharacter(int classIndex)
 
     playerCharacter = new Character(playerclass);
     
-    playerCharacter->health = 100;
-    playerCharacter->baseDamage = 20;
-    playerCharacter->playerIndex = 0;
-    
     cout << playerCharacter->health << endl << playerCharacter->baseDamage << endl << playerCharacter->playerIndex << endl; //TODO: Debugging
 }
 
@@ -88,10 +84,6 @@ void BattleField::CreateEnemyCharacter()
     cout << "Enemy Class Choice: " << Types::StringifyCharacterClass[enemyClass] << endl;
     
     enemyCharacter = new Character(enemyClass);
-    
-    enemyCharacter->health = 100;
-    enemyCharacter->baseDamage = 20;
-    enemyCharacter->playerIndex = 1;
 
     cout << enemyCharacter->health << endl << enemyCharacter->baseDamage << endl << enemyCharacter->playerIndex << endl; //TODO: Debugging
 }
