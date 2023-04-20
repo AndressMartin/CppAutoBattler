@@ -14,13 +14,10 @@ public:
     ~BattleField();
 private:
     Grid* grid;
-    Types::GridBox* playerCurrentLocation;
-    Types::GridBox* enemyCurrentLocation;
     list<Character*>* allPlayers;
     Character* playerCharacter;
     Character* enemyCharacter;
     int currentTurn;
-    int numberOfPossibleTiles;
 
     void CreateBattlefield();
     void DisplayClassDescriptions();
