@@ -16,7 +16,7 @@ namespace Classes
             {Types::StatusEffect::Fearful},
             0,
             {Types::SpecialAbility::Defend},
-            0,
+            100,
             "Can choose to heal themselves and choose to defend. Can inflict \"fearful\" status, causing opponent to heal you instead.",
         };
         attributes[Warrior] =
@@ -30,7 +30,7 @@ namespace Classes
             {Types::StatusEffect::Bleeding},
             0,
             {Types::SpecialAbility::Knockback},
-            100,
+            0,
             "Has good chance to hit twice and can choose to defend. Can inflict bleeding. Gets stronger as life depletes.",
         };
         attributes[Cleric] =

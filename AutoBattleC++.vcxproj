@@ -141,6 +141,8 @@
     </ItemDefinitionGroup>
     <ItemGroup>
         <ClCompile Include="Abilities\BaseSpecialAbility.cpp" />
+        <ClCompile Include="Abilities\Defend.cpp" />
+        <ClCompile Include="Abilities\Heal.cpp" />
         <ClCompile Include="Abilities\Knockback.cpp" />
         <ClCompile Include="Abilities\SpecialAbilityFactory.cpp" />
         <ClCompile Include="AutoBattleC++.cpp" />
@@ -233,6 +235,8 @@
     </ItemGroup>
     <ItemGroup>
         <ClInclude Include="Abilities\BaseSpecialAbility.h" />
+        <ClInclude Include="Abilities\Defend.h" />
+        <ClInclude Include="Abilities\Heal.h" />
         <ClInclude Include="Abilities\Knockback.h" />
         <ClInclude Include="Abilities\SpecialAbilityFactory.h" />
         <ClInclude Include="BattleField.h" />

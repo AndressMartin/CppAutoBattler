@@ -1,4 +1,6 @@
-﻿#include "Knockback.h"
+﻿#include <iostream>
+#include "../Character.h"
+#include "Knockback.h"
 
 namespace SpecialAbilities
 {
