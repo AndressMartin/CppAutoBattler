@@ -30,6 +30,7 @@ Character::Character(Classes::CharacterClass characterClass)
     this->specialAbilities = attributes.specialAbilities;
     this->statusInflictChance = attributes.statusInflictChance;
     this->abilityChance = attributes.abilityChance;
+    this->range = attributes.range;
     this->icon = attributes.icon;
 }
 
@@ -166,9 +167,10 @@ bool Character::CheckCloseTargets(Grid* battlefield)
 {
     for (const auto& direction : directions)
     {
-        if (CheckDirections(battlefield, currentBox->xIndex + direction[0], currentBox->yIndex + direction[1]))
+        for (int i = 1; i <= range; ++i)
         {
-            return true;
+            if (CheckDirections(battlefield, currentBox->xIndex + direction[0] * i, currentBox->yIndex + direction[1] * i))
+                return true;
         }
     }
 
