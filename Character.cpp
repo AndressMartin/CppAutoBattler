@@ -6,7 +6,6 @@
 #include "Grid.h"
 #include "Character.h"
 #include "Types.h"
-#include "Character.h"
 #include "Utils.h"
 #include "Classes.h"
 #include "StatusEffects/StatusEffectFactory.h"
@@ -18,8 +17,8 @@ using namespace Types;
 Character::Character(Classes::CharacterClass characterClass)
 : characterClass(characterClass)
 {
-    static const Classes::ClassDatabase classDatabase;
-    const Classes::ClassAttributes& attributes = classDatabase.GetAttributes(characterClass);
+    static const Classes::ClassDatabase class_database;
+    const Classes::ClassAttributes& attributes = class_database.GetAttributes(characterClass);
 
     this->characterClass = characterClass;
     this->health = attributes.health;
@@ -92,13 +91,11 @@ void Character::HandleTurn(Grid* battlefield)
         return;
     HandleStatusEffectsProc(ProcEvent::OnStartOfTurn);
     if (CheckCloseTargets(battlefield))
-    {
-        Attack(target);
-    }
-    else // Calculates in which direction this character should move to be closer to a possible target
+        Attack();
+    else //Calculates in which direction this character should move to be closer to a possible target
         {
         int bestDirectionIndex = -1;
-        int bestDistance = INT_MAX; //Will be replaced by the distance found
+        int bestDistance = INT_MAX; //Replaced by the distance found
         
         for (int i = 0; i < 4; ++i) {
             const int newX = currentBox->xIndex + directions[i][0];
@@ -130,11 +127,8 @@ void Character::HandleTurn(Grid* battlefield)
 
 bool Character::CheckCloseTargets(Grid* battlefield)
 {
-
-    // std::cout << '\n' << currentBox->xIndex << ", " << currentBox->yIndex << '\n';
     for (const auto& direction : directions)
     {
-        // std::cout << "Directions: " << direction[0] << ", " << direction[1] << '\t';
         if (CheckDirections(battlefield, currentBox->xIndex + direction[0], currentBox->yIndex + direction[1]))
         {
             return true;
@@ -146,30 +140,22 @@ bool Character::CheckCloseTargets(Grid* battlefield)
 
 bool Character::CheckDirections(Grid* battlefield, int x, int y)
 {
-    //Already checks for nullPtr.
-    // std::cout << x << ", " << y << '\t';
     if (const auto gridBox = battlefield->GetGridBox(x, y))
     {
         if (gridBox->occupied)
         {
-            // std::cout << "Occupied\n";
             return true;
         }
-        // std::cout << "Free\n";
         return false;
     }
-    else
-    {
-        // std::cout << "INVALID\n";
-        return false;
-    }
+    return false;
 }
 
-void Character::Attack(Character* target)
+void Character::Attack()
 {
     AttackOutcome outcome = CalculateAttackOutcome();
-    int damage;
-    bool successfulHit;
+    int damage = 0;
+    bool successfulHit = false;
     int randomChance = Utils::GetRandomInt(0, 100);
     bool canInflict = randomChance <= statusInflictChance && target->statusEffects_inflicted.empty();
 
@@ -236,20 +222,6 @@ AttackOutcome Character::CalculateAttackOutcome()
         return AttackOutcome::Hit;
     }
     return AttackOutcome::Crit;
-}
-
-void Character::ApplyRandomStatusEffect()
-{
-    if (statusEffects_canInflict.empty())
-    {
-        std::cout << "No status effects available to inflict.\n";
-        return;
-    }
-
-    int randomIndex = Utils::GetRandomInt_MaxExclusive(0, statusEffects_canInflict.size());
-
-    BaseStatusEffect& randomEffect = *statusEffects_canInflict[randomIndex];
-    randomEffect.Inflict(*target);
 }
 
 void Character::GetInflictedWithStatus(std::unique_ptr<BaseStatusEffect> status)

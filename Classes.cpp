@@ -1,5 +1,4 @@
 ﻿#include "Classes.h"
-#include <ostream>
 #include "Types.h"
 
 namespace Classes

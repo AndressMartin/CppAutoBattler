@@ -15,18 +15,19 @@ namespace StatusEffects
     {
         switch (effectType)
         {
-        case StatusEffect::Bleeding:
-            return std::make_unique<Bleed>(owner);
-        case StatusEffect::Poisoned:
-            return std::make_unique<Poison>(owner);
-        case StatusEffect::Cursed:
-            return std::make_unique<Curse>(owner);
-        case StatusEffect::Fearful:
-            return std::make_unique<Fear>(owner);
-        case StatusEffect::Burning:
-            return std::make_unique<Burn>(owner);
-        case StatusEffect::Frozen:
-            return std::make_unique<Freeze>(owner);
+            case StatusEffect::Bleeding:
+                return std::make_unique<Bleed>(owner);
+            case StatusEffect::Poisoned:
+                return std::make_unique<Poison>(owner);
+            case StatusEffect::Cursed:
+                return std::make_unique<Curse>(owner);
+            case StatusEffect::Fearful:
+                return std::make_unique<Fear>(owner);
+            case StatusEffect::Burning:
+                return std::make_unique<Burn>(owner);
+            case StatusEffect::Frozen:
+                return std::make_unique<Freeze>(owner);
         }
+        return nullptr;
     }
 }

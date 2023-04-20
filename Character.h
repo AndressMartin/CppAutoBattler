@@ -10,7 +10,7 @@ enum class AttackOutcome
 {
     Miss,
     Hit,
-    Crit
+    Crit,
 };
 
 class Character
@@ -45,7 +45,7 @@ public:
     void HandleTurn(Grid* battlefield);
     bool CheckCloseTargets(Grid* battlefield);
     bool CheckDirections(Grid* battlefield, int x, int y);
-    void Attack(Character* target);
+    void Attack();
     AttackOutcome CalculateAttackOutcome();
     void ApplyRandomStatusEffect();
     void GetInflictedWithStatus(std::unique_ptr<StatusEffects::BaseStatusEffect> status);

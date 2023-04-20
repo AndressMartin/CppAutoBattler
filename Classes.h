@@ -3,9 +3,8 @@
 #include <map>
 #include <string>
 #include <Vector>
-
 #include "Types.h"
-#include "StatusEffects/BaseStatusEffect.h"
+
 #define STRINGIFY( name ) #name
 
 namespace Classes
