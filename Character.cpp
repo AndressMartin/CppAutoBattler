@@ -8,6 +8,7 @@
 #include "Types.h"
 #include "Utils.h"
 #include "Classes.h"
+#include "Abilities/SpecialAbilityFactory.h"
 #include "StatusEffects/StatusEffectFactory.h"
 
 using namespace std;
@@ -26,7 +27,9 @@ Character::Character(Classes::CharacterClass characterClass)
     this->critModifier = attributes.critMultiplier;
     this->critChance = attributes.critChance;
     this->statusEffects = attributes.statusEffects;
+    this->specialAbilities = attributes.specialAbilities;
     this->statusInflictChance = attributes.statusInflictChance;
+    this->abilityChance = attributes.abilityChance;
     this->icon = attributes.icon;
 }
 
@@ -73,15 +76,15 @@ bool Character::CanWalk(Grid* battlefield, int x, int y)
     return gridBox && !gridBox->occupied; //Already checks for nullPtr
 }
 
-void Character::WalkTo(Grid* battlefield, int x, int y)
+void Character::WalkTo(Grid* battlefield, int x, int y, Character* character)
 {
-    GridBox* gridBox = battlefield->GetGridBox(currentBox->xIndex + x, currentBox->yIndex + y);
+    GridBox* gridBox = battlefield->GetGridBox(character->currentBox->xIndex + x, character->currentBox->yIndex + y);
     if (gridBox)
     {
-        const auto tempPtr = currentBox->occupied;
-        currentBox->occupied = nullptr;
+        const auto tempPtr = character->currentBox->occupied;
+        character->currentBox->occupied = nullptr;
         gridBox->occupied = tempPtr;
-        currentBox = gridBox;
+        character->currentBox = gridBox;
     }
 }
 
@@ -89,9 +92,30 @@ void Character::HandleTurn(Grid* battlefield)
 {
     if(target->isDead)
         return;
+    
     HandleStatusEffectsProc(ProcEvent::OnStartOfTurn);
+    
+    if(target->isDead) //Repeated due to status timing
+        return;
+
+    if(actionBlocked) //eg. Frozen Status
+    {
+        actionBlocked = false;
+        return;
+    }
+    
     if (CheckCloseTargets(battlefield))
-        Attack();
+    {
+        HandleStatusEffectsProc(ProcEvent::OnAboutToAttack);
+
+        if(attackBlocked) //eg. Fearful Status
+        {
+            attackBlocked = false;
+            return;
+        }
+
+        ChooseAttackOrAbility(battlefield);
+    }
     else //Calculates in which direction this character should move to be closer to a possible target
         {
         int bestDirectionIndex = -1;
@@ -110,7 +134,7 @@ void Character::HandleTurn(Grid* battlefield)
         }
 
         if (bestDirectionIndex >= 0) {
-            WalkTo(battlefield, directions[bestDirectionIndex][0], directions[bestDirectionIndex][1]);
+            WalkTo(battlefield, directions[bestDirectionIndex][0], directions[bestDirectionIndex][1], this);
             cout << "Player " << Classes::StringifyCharacterClass[characterClass] << " walked ";
             if (bestDirectionIndex == 0) cout << "LEFT";
             else if (bestDirectionIndex == 1) cout << "RIGHT";
@@ -123,6 +147,19 @@ void Character::HandleTurn(Grid* battlefield)
         battlefield->DrawBattlefield();
     }
     HandleStatusEffectsProc(ProcEvent::OnEndOfTurn);
+}
+
+void Character::ChooseAttackOrAbility(Grid* battlefield)
+{
+    int chance = Utils::GetRandomInt(0, 100);
+    if (chance < abilityChance)
+    {
+        UseSpecialAbility(battlefield);
+    }
+    else
+    {
+        Attack();
+    }
 }
 
 bool Character::CheckCloseTargets(Grid* battlefield)
@@ -154,18 +191,10 @@ bool Character::CheckDirections(Grid* battlefield, int x, int y)
 void Character::Attack()
 {
     AttackOutcome outcome = CalculateAttackOutcome();
-    int damage = 0;
+    int damage = baseDamage + damageModifiers;
     bool successfulHit = false;
     int randomChance = Utils::GetRandomInt(0, 100);
     bool canInflict = randomChance <= statusInflictChance && target->statusEffects_inflicted.empty();
-
-    HandleStatusEffectsProc(ProcEvent::OnAboutToAttack);
-
-    if(attackBlocked)
-    {
-        attackBlocked = false;
-        return;
-    }
 
     switch (outcome)
     {
@@ -173,17 +202,15 @@ void Character::Attack()
             cout << Classes::StringifyCharacterClass[characterClass] << " missed!\n";
             return;
         case AttackOutcome::Hit:
-            damage = baseDamage;
             cout << Classes::StringifyCharacterClass[characterClass] << " hits for " << damage << ". ";
             successfulHit = true;
             break;
         case AttackOutcome::Crit:
-            damage = ceil(baseDamage * critModifier);
+            damage = ceil(damage * critModifier);
             cout << Classes::StringifyCharacterClass[characterClass] << " CRITS for " << damage << "! ";
             successfulHit = true;
             break;
     }
-
     target->TakeDamage(damage);
 
     if (successfulHit)
@@ -249,5 +276,20 @@ void Character::HandleStatusEffectsProc(ProcEvent procEvent)
         {
             effect->Proc();
         }
+    }
+}
+
+void Character::UseSpecialAbility(Grid* battlefield)
+{
+    int randomIndex = Utils::GetRandomInt_MaxExclusive(0, specialAbilities.size());
+    auto chosenAbility = specialAbilities[randomIndex];
+    auto abilityInstance = SpecialAbilities::CreateSpecialAbility(chosenAbility);
+    if (abilityInstance && abilityInstance->CanUse(*this, *target))
+    {
+        abilityInstance->Execute(*this, *target, battlefield);
+    }
+    else
+    {
+        ChooseAttackOrAbility(battlefield);
     }
 }

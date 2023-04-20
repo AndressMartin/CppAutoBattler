@@ -15,4 +15,6 @@ public:
 
     void DrawBattlefield();
     Types::GridBox* GetGridBox(int x, int y);
+    int GetWidth() const;
+    int GetHeight() const;
 };

@@ -140,6 +140,15 @@
         </Link>
     </ItemDefinitionGroup>
     <ItemGroup>
+        <ClCompile Include="Abilities\BaseSpecialAbility.cpp" />
+        <ClCompile Include="Abilities\ClearAilments.cpp" />
+        <ClCompile Include="Abilities\Heal.cpp" />
+        <ClCompile Include="Abilities\Intensify.cpp" />
+        <ClCompile Include="Abilities\Knockback.cpp" />
+        <ClCompile Include="Abilities\Multiattack.cpp" />
+        <ClCompile Include="Abilities\RunAndGun.cpp" />
+        <ClCompile Include="Abilities\SpecialAbilityFactory.cpp" />
+        <ClCompile Include="Abilities\Teleport.cpp" />
         <ClCompile Include="AutoBattleC++.cpp" />
         <ClCompile Include="BattleField.cpp" />
         <ClCompile Include="Character.cpp" />
@@ -229,6 +238,15 @@
         <ClCompile Include="Utils.cpp" />
     </ItemGroup>
     <ItemGroup>
+        <ClInclude Include="Abilities\BaseSpecialAbility.h" />
+        <ClInclude Include="Abilities\ClearAilments.h" />
+        <ClInclude Include="Abilities\Heal.h" />
+        <ClInclude Include="Abilities\Intensify.h" />
+        <ClInclude Include="Abilities\Knockback.h" />
+        <ClInclude Include="Abilities\Multiattack.h" />
+        <ClInclude Include="Abilities\RunAndGun.h" />
+        <ClInclude Include="Abilities\SpecialAbilityFactory.h" />
+        <ClInclude Include="Abilities\Teleport.h" />
         <ClInclude Include="BattleField.h" />
         <ClInclude Include="Character.h" />
         <ClInclude Include="Classes.h" />

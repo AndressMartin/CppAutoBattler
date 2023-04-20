@@ -13,7 +13,7 @@ namespace StatusEffects
         int chance = Utils::GetRandomInt(0, 100);
         if(chance <= ghostChance)
         {
-            std::cout << " ghosts gnaw at your soul... ";
+            std::cout << "Ghosts gnaw at thy soul... ";
             target.TakeDamage(curseDamage);
         }
     }

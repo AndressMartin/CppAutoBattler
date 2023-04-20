@@ -15,7 +15,14 @@ namespace Classes
             'P',
             {Types::StatusEffect::Fearful},
             30,
-            "Can choose to heal themselves and choose to defend. Can inflict \"fearful\" status, causing opponent to heal you instead.",
+            {
+                Types::SpecialAbility::Heal,
+                Types::SpecialAbility::Knockback,
+                Types::SpecialAbility::ClearAilments,
+            },
+            20,
+            R"(Inflicts "fearful" status, causing opponent to heal you instead.
+            Actions: "Heal", "Knockback" and "Clear Ailments".)",
         };
         attributes[Warrior] =
         {
@@ -26,8 +33,14 @@ namespace Classes
             1,
             'X',
             {Types::StatusEffect::Bleeding},
-            50,
-            "Has good chance to hit twice and can choose to defend. Can inflict bleeding. Gets stronger as life depletes.",
+            40,
+            {
+                Types::SpecialAbility::Knockback,
+                Types::SpecialAbility::Multiattack,
+            },
+            30,
+            R"(Inflicts "bleeding" status, causing opponent to suffer heavy damage from blows.
+            Actions: "Knockback" and "Multiattack".)",
         };
         attributes[Cleric] =
         {
@@ -39,7 +52,13 @@ namespace Classes
             'C',
             {Types::StatusEffect::Cursed},
             30,
-            "Can choose to heal themselves. Can inflict \"cursed\" status, making ghosts appear to hit the target.",
+            {
+                Types::SpecialAbility::Heal,
+                Types::SpecialAbility::Intensify,
+            },
+            70,
+            R"(Inflicts "cursed" status, causing opponent to be haunted by ghosts.
+            Actions: "Heal" and "Intensify".)",
         };
         attributes[Archer] =
         {
@@ -51,19 +70,34 @@ namespace Classes
             ')',
             {Types::StatusEffect::Poisoned},
             40,
-            "Can hit from three squares away. High evasion rate. Can inflict poison.",
+            {
+                Types::SpecialAbility::RunAndGun,
+                Types::SpecialAbility::Multiattack,
+            },
+            60,
+            R"(Hits from three squares away and inflicts poison.
+            Actions: "Run And Gun" and "Multiattack".)",
         };
         attributes[Mage] =
         {
             60,
-            12,
-            3.0f,
+            10,
+            1.5f,
             12,
             2,
             '0',
-            {Types::StatusEffect::Burning,Types::StatusEffect::Frozen,},
+            {
+                Types::StatusEffect::Burning,
+                Types::StatusEffect::Frozen,
+            },
             30,
-            "Can hit from two squares away, and conjure meteors. Can inflict a random status.",
+            {
+                Types::SpecialAbility::Teleport,
+                Types::SpecialAbility::Knockback,
+            },
+            50,
+            R"(Hits from two squares away and inflicts two magical status effects.
+            Actions: "Teleport" and "Knockback".)",
         };
     }
 

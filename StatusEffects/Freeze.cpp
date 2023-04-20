@@ -6,7 +6,7 @@
 
 namespace StatusEffects
 {
-    Freeze::Freeze(Character& target) : BaseStatusEffect(target, {Types::ProcEvent::OnAboutToAttack}) {}
+    Freeze::Freeze(Character& target) : BaseStatusEffect(target, {Types::ProcEvent::OnStartOfTurn}) {}
     void Freeze::Proc()
     {
         if(target.isDead)
@@ -17,8 +17,8 @@ namespace StatusEffects
             chanceUnfreeze += chanceUnfreeze;
         if(counter < maxCounter)
         {
-            std::cout << target.charName << " is frozen and cannot attack.\n";
-            target.attackBlocked = true;
+            std::cout << target.charName << " is frozen and cannot act.\n";
+            target.actionBlocked = true;
             counter++;
         }
         if(counter >= maxCounter || unfreeze)
