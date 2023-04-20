@@ -18,6 +18,8 @@ BattleField::BattleField()
     
     AllocateCharacter(playerCharacter);
     AllocateCharacter(enemyCharacter);
+    cout << "----- Battlefield is created!\n";
+    cout << "----- Players are put in their posts!\n";
     grid->DrawBattlefield();
     HandleTurn();
 }
@@ -30,9 +32,9 @@ void BattleField::CreateBattlefield()
 {
     int x = 0;
     int y = 0;
-    cout << "Insert the number of rows" << endl;
+    cout << "\nInsert the number of rows: ";
     cin >> x;
-    cout << "Insert the number of collumns" << endl;
+    cout << "Insert the number of collumns: ";
     cin >> y;
     grid = new Grid(x, y);
 }

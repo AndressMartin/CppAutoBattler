@@ -7,15 +7,12 @@
 Grid::Grid(const int lines, const int columns)
     : grids(lines, std::vector<Types::GridBox*>(columns)), xLength(columns), yLength(lines)
 {
-    std::cout << grids.size() << '\n';
-    std::cout << grids[0].size() << '\n';
     for (int j = 0; j < xLength; j++)
     {
         for (int i = 0; i < yLength; i++)
         {
             auto newBox = new Types::GridBox(j, i, nullptr, columns * j + i);
             grids[i][j] = newBox;
-            // std::cout << '\n' << columns * i + j << '\n';
         }
     }
 }
