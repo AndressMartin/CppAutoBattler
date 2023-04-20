@@ -196,7 +196,6 @@ void BattleField::AllocateCharacter(Character* player)
     Types::GridBox* randomLocation = grid->grids[randomRow][randomCol];
     if (!randomLocation->occupied)
     {
-        playerCurrentLocation = randomLocation;
         randomLocation->occupied = player;
         player->currentBox = randomLocation;
         return;

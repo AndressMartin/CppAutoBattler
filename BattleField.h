@@ -1,11 +1,7 @@
 #pragma once
 #include "Character.h"
-#include "Types.h"
 #include <list>
-#include <iostream>
 #include "Grid.h"
-
-using namespace std;
 
 class BattleField
 {
@@ -14,7 +10,7 @@ public:
     ~BattleField();
 private:
     Grid* grid;
-    list<Character*>* allPlayers;
+    std::list<Character*>* allPlayers;
     Character* playerCharacter;
     Character* enemyCharacter;
     int currentTurn;
