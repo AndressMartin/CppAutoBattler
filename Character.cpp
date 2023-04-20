@@ -93,8 +93,23 @@ void Character::HandleTurn(Grid* battlefield)
     if(target->isDead)
         return;
     HandleStatusEffectsProc(ProcEvent::OnStartOfTurn);
+
+    if(actionBlocked) //eg. Frozen Status
+    {
+        actionBlocked = false;
+        return;
+    }
+    
     if (CheckCloseTargets(battlefield))
     {
+        HandleStatusEffectsProc(ProcEvent::OnAboutToAttack);
+
+        if(attackBlocked) //eg. Fearful Status
+        {
+            attackBlocked = false;
+            return;
+        }
+        
         int chance = Utils::GetRandomInt(0, 100);
         if (chance < abilityChance)
         {
@@ -171,14 +186,6 @@ void Character::Attack()
     bool successfulHit = false;
     int randomChance = Utils::GetRandomInt(0, 100);
     bool canInflict = randomChance <= statusInflictChance && target->statusEffects_inflicted.empty();
-
-    HandleStatusEffectsProc(ProcEvent::OnAboutToAttack);
-
-    if(attackBlocked)
-    {
-        attackBlocked = false;
-        return;
-    }
 
     switch (outcome)
     {

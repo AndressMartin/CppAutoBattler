@@ -33,6 +33,7 @@ public:
 
     bool isDead;
     bool attackBlocked;
+    bool actionBlocked;
     
     Character* target;
     Types::GridBox* currentBox;
