@@ -29,6 +29,7 @@ Character::Character(Classes::CharacterClass characterClass)
     this->statusEffects = attributes.statusEffects;
     this->specialAbilities = attributes.specialAbilities;
     this->statusInflictChance = attributes.statusInflictChance;
+    this->abilityChance = attributes.abilityChance;
     this->icon = attributes.icon;
 }
 
@@ -75,15 +76,15 @@ bool Character::CanWalk(Grid* battlefield, int x, int y)
     return gridBox && !gridBox->occupied; //Already checks for nullPtr
 }
 
-void Character::WalkTo(Grid* battlefield, int x, int y)
+void Character::WalkTo(Grid* battlefield, int x, int y, Character* character)
 {
-    GridBox* gridBox = battlefield->GetGridBox(currentBox->xIndex + x, currentBox->yIndex + y);
+    GridBox* gridBox = battlefield->GetGridBox(character->currentBox->xIndex + x, character->currentBox->yIndex + y);
     if (gridBox)
     {
-        const auto tempPtr = currentBox->occupied;
-        currentBox->occupied = nullptr;
+        const auto tempPtr = character->currentBox->occupied;
+        character->currentBox->occupied = nullptr;
         gridBox->occupied = tempPtr;
-        currentBox = gridBox;
+        character->currentBox = gridBox;
     }
 }
 
@@ -94,10 +95,10 @@ void Character::HandleTurn(Grid* battlefield)
     HandleStatusEffectsProc(ProcEvent::OnStartOfTurn);
     if (CheckCloseTargets(battlefield))
     {
-        int abilityChance = Utils::GetRandomInt(0, 100);
-        if (abilityChance < 20) // 20% chance to use the special ability
+        int chance = Utils::GetRandomInt(0, 100);
+        if (chance < abilityChance)
         {
-            UseSpecialAbility();
+            UseSpecialAbility(battlefield);
         }
         else
         {
@@ -122,7 +123,7 @@ void Character::HandleTurn(Grid* battlefield)
         }
 
         if (bestDirectionIndex >= 0) {
-            WalkTo(battlefield, directions[bestDirectionIndex][0], directions[bestDirectionIndex][1]);
+            WalkTo(battlefield, directions[bestDirectionIndex][0], directions[bestDirectionIndex][1], this);
             cout << "Player " << Classes::StringifyCharacterClass[characterClass] << " walked ";
             if (bestDirectionIndex == 0) cout << "LEFT";
             else if (bestDirectionIndex == 1) cout << "RIGHT";
@@ -264,14 +265,14 @@ void Character::HandleStatusEffectsProc(ProcEvent procEvent)
     }
 }
 
-void Character::UseSpecialAbility()
+void Character::UseSpecialAbility(Grid* battlefield)
 {
     for (auto ability : specialAbilities)
     {
         auto abilityInstance = SpecialAbilities::CreateSpecialAbility(ability);
         if (abilityInstance)
         {
-            abilityInstance->Execute(*this, *target);
+            abilityInstance->Execute(*this, *target, battlefield);
         }
     }
 }

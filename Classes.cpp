@@ -14,7 +14,9 @@ namespace Classes
             1,
             'P',
             {Types::StatusEffect::Fearful},
-            30,
+            0,
+            {Types::SpecialAbility::Defend},
+            0,
             "Can choose to heal themselves and choose to defend. Can inflict \"fearful\" status, causing opponent to heal you instead.",
         };
         attributes[Warrior] =
@@ -26,7 +28,9 @@ namespace Classes
             1,
             'X',
             {Types::StatusEffect::Bleeding},
-            50,
+            0,
+            {Types::SpecialAbility::Knockback},
+            100,
             "Has good chance to hit twice and can choose to defend. Can inflict bleeding. Gets stronger as life depletes.",
         };
         attributes[Cleric] =
@@ -38,7 +42,9 @@ namespace Classes
             1,
             'C',
             {Types::StatusEffect::Cursed},
-            30,
+            0,
+            {Types::SpecialAbility::Heal},
+            0,
             "Can choose to heal themselves. Can inflict \"cursed\" status, making ghosts appear to hit the target.",
         };
         attributes[Archer] =
@@ -50,7 +56,9 @@ namespace Classes
             3,
             ')',
             {Types::StatusEffect::Poisoned},
-            40,
+            0,
+            {Types::SpecialAbility::Evade},
+            0,
             "Can hit from three squares away. High evasion rate. Can inflict poison.",
         };
         attributes[Mage] =
@@ -62,7 +70,9 @@ namespace Classes
             2,
             '0',
             {Types::StatusEffect::Burning,Types::StatusEffect::Frozen,},
-            30,
+            0,
+            {Types::SpecialAbility::Teleport},
+            0,
             "Can hit from two squares away, and conjure meteors. Can inflict a random status.",
         };
     }

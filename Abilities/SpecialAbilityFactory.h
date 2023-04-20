@@ -1,15 +1,6 @@
-﻿#pragma once
-
-class Character;
+﻿#include "BaseSpecialAbility.h"
 
 namespace SpecialAbilities
 {
-    class BaseSpecialAbility
-    {
-    public:
-        virtual ~BaseSpecialAbility() = default;
-
-        // The method to execute the special ability
-        virtual void Execute(Character& user, Character& target) = 0;
-    };
+    std::unique_ptr<BaseSpecialAbility> CreateSpecialAbility(Types::SpecialAbility abilityType);
 }

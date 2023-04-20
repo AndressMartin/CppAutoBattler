@@ -27,7 +27,9 @@ public:
     float critModifier;
     int critChance;
     std::vector<Types::StatusEffect> statusEffects;
+    std::vector<Types::SpecialAbility> specialAbilities;
     int statusInflictChance;
+    int abilityChance;
 
     bool isDead;
     bool attackBlocked;
@@ -41,7 +43,7 @@ public:
     int GetIndex(std::vector<Types::GridBox*> v, int index);
     void Die();
     bool CanWalk(Grid* battlefield, int x, int y);
-    void WalkTo(Grid* battlefield, int x, int y);
+    void WalkTo(Grid* battlefield, int x, int y, Character* character);
     void HandleTurn(Grid* battlefield);
     bool CheckCloseTargets(Grid* battlefield);
     bool CheckDirections(Grid* battlefield, int x, int y);
@@ -51,6 +53,7 @@ public:
     void GetInflictedWithStatus(std::unique_ptr<StatusEffects::BaseStatusEffect> status);
     void RemoveStatusEffect(StatusEffects::BaseStatusEffect* effectToRemove);
     void HandleStatusEffectsProc(Types::ProcEvent procEvent);
+    void UseSpecialAbility(Grid* battlefield);
     std::vector<std::unique_ptr<StatusEffects::BaseStatusEffect>> statusEffects_canInflict;
     std::vector<std::unique_ptr<StatusEffects::BaseStatusEffect>> statusEffects_inflicted;
 };

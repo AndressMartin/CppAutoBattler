@@ -6,18 +6,9 @@ class Character;
 
 namespace SpecialAbilities
 {
-    // Knockback.h
     class Knockback : public BaseSpecialAbility
     {
     public:
-        void Execute(Character& user, Character& target) override;
+        void Execute(Character& user, Character& target, Grid* battlefield) override;
     };
-
-    // Knockback.cpp
-    void Knockback::Execute(Character& user, Character& target)
-    {
-        std::cout << "Triggered Knockback";
-        user.Attack();
-        //Knockback target;
-    }
 }

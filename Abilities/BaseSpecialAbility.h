@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+class Grid;
 class Character;
 
 namespace SpecialAbilities
@@ -10,6 +11,6 @@ namespace SpecialAbilities
         virtual ~BaseSpecialAbility() = default;
 
         // The method to execute the special ability
-        virtual void Execute(Character& user, Character& target) = 0;
+        virtual void Execute(Character& user, Character& target, Grid* battlefield) = 0;
     };
 }
