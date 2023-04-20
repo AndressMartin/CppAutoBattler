@@ -30,7 +30,6 @@ namespace Types
         Bleeding,
         Cursed,
         Fearful,
-        Confused,
         Burning,
         Frozen,
     };

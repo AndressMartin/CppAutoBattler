@@ -62,9 +62,9 @@ namespace Classes
             12,
             2,
             '0',
-            {Types::StatusEffect::Confused, Types::StatusEffect::Burning, Types::StatusEffect::Frozen},
+            {Types::StatusEffect::Burning,Types::StatusEffect::Frozen,},
             30,
-            "Can hit from two squares away, and conjure meteors. Can inflict a random magical status.",
+            "Can hit from two squares away, and conjure meteors. Can inflict a random status.",
         };
     }
 

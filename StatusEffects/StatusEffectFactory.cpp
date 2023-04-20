@@ -1,7 +1,9 @@
 ﻿#include "StatusEffectFactory.h"
 #include "Bleed.h"
+#include "Burn.h"
 #include "Curse.h"
 #include "Fear.h"
+#include "Freeze.h"
 #include "Poison.h"
 #include "../Character.h"
 
@@ -21,8 +23,10 @@ namespace StatusEffects
             return std::make_unique<Curse>(owner);
         case StatusEffect::Fearful:
             return std::make_unique<Fear>(owner);
-        default:
-            return nullptr;
+        case StatusEffect::Burning:
+            return std::make_unique<Burn>(owner);
+        case StatusEffect::Frozen:
+            return std::make_unique<Freeze>(owner);
         }
     }
 }

@@ -8,7 +8,6 @@ namespace Types
         STRINGIFY(Bleeding),
         STRINGIFY(Cursed),
         STRINGIFY(Fearful),
-        STRINGIFY(Confused),
         STRINGIFY(Burning),
         STRINGIFY(Frozen),
     };

@@ -219,8 +219,10 @@
           <LinkCompiled>true</LinkCompiled>
         </ClCompile>
         <ClCompile Include="StatusEffects\Bleed.cpp" />
+        <ClCompile Include="StatusEffects\Burn.cpp" />
         <ClCompile Include="StatusEffects\Curse.cpp" />
         <ClCompile Include="StatusEffects\Fear.cpp" />
+        <ClCompile Include="StatusEffects\Freeze.cpp" />
         <ClCompile Include="StatusEffects\Poison.cpp" />
         <ClCompile Include="StatusEffects\StatusEffectFactory.cpp" />
         <ClCompile Include="Types.cpp" />
@@ -233,8 +235,10 @@
         <ClInclude Include="Grid.h" />
         <ClInclude Include="StatusEffects\BaseStatusEffect.h" />
         <ClInclude Include="StatusEffects\Bleed.h" />
+        <ClInclude Include="StatusEffects\Burn.h" />
         <ClInclude Include="StatusEffects\Curse.h" />
         <ClInclude Include="StatusEffects\Fear.h" />
+        <ClInclude Include="StatusEffects\Freeze.h" />
         <ClInclude Include="StatusEffects\Poison.h" />
         <ClInclude Include="StatusEffects\StatusEffectFactory.h" />
         <ClInclude Include="Types.h" />
