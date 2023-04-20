@@ -30,6 +30,7 @@ Character::Character(Classes::CharacterClass characterClass)
     this->specialAbilities = attributes.specialAbilities;
     this->statusInflictChance = attributes.statusInflictChance;
     this->abilityChance = attributes.abilityChance;
+    this->range = attributes.range;
     this->icon = attributes.icon;
 }
 
@@ -117,35 +118,39 @@ void Character::HandleTurn(Grid* battlefield)
         ChooseAttackOrAbility(battlefield);
     }
     else //Calculates in which direction this character should move to be closer to a possible target
-        {
+    {
         int bestDirectionIndex = -1;
         int bestDistance = INT_MAX; //Replaced by the distance found
         
-        for (int i = 0; i < 4; ++i) {
+        for (int i = 0; i < 4; ++i)
+        {
             const int newX = currentBox->xIndex + directions[i][0];
             const int newY = currentBox->yIndex + directions[i][1];
-            if (CanWalk(battlefield, directions[i][0], directions[i][1])) {
+            if (CanWalk(battlefield, directions[i][0], directions[i][1]))
+            {
                 const int distance = abs(newX - target->currentBox->xIndex) + abs(newY - target->currentBox->yIndex);
-                if (distance < bestDistance) {
+                if (distance < bestDistance)
+                {
                     bestDistance = distance;
                     bestDirectionIndex = i;
                 }
             }
         }
 
-        if (bestDirectionIndex >= 0) {
+        if (bestDirectionIndex >= 0)
+        {
             WalkTo(battlefield, directions[bestDirectionIndex][0], directions[bestDirectionIndex][1], this);
-            cout << "Player " << Classes::StringifyCharacterClass[characterClass] << " walked ";
+            cout << charName <<"'s " << Classes::StringifyCharacterClass[characterClass] << " walked ";
             if (bestDirectionIndex == 0) cout << "LEFT";
             else if (bestDirectionIndex == 1) cout << "RIGHT";
             else if (bestDirectionIndex == 2) cout << "DOWN";
             else if (bestDirectionIndex == 3) cout << "UP";
             cout << '\n';
         }
-        else {cout << "Something went wrong with the movement\n";}
 
         battlefield->DrawBattlefield();
     }
+    
     HandleStatusEffectsProc(ProcEvent::OnEndOfTurn);
 }
 
@@ -166,9 +171,10 @@ bool Character::CheckCloseTargets(Grid* battlefield)
 {
     for (const auto& direction : directions)
     {
-        if (CheckDirections(battlefield, currentBox->xIndex + direction[0], currentBox->yIndex + direction[1]))
+        for (int i = 1; i <= range; ++i)
         {
-            return true;
+            if (CheckDirections(battlefield, currentBox->xIndex + direction[0] * i, currentBox->yIndex + direction[1] * i))
+                return true;
         }
     }
 

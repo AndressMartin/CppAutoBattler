@@ -31,6 +31,7 @@ public:
     std::vector<Types::SpecialAbility> specialAbilities;
     int statusInflictChance;
     int abilityChance;
+    int range;
 
     bool isDead;
     bool attackBlocked;
