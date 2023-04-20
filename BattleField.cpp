@@ -172,7 +172,7 @@ void BattleField::HandleTurnEnd()
     }
     if (playerCharacter->isDead)
     {
-        cout << "You lost! :(\nTry again! PS: Paladin is kinda broken!";
+        cout << "You lost. :(\nTry again!\n";
         return;
     }
     if (enemyCharacter->isDead)

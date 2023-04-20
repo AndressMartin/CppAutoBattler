@@ -12,6 +12,7 @@ class BattleField
 public:
     BattleField();
     ~BattleField();
+private:
     Grid* grid;
     Types::GridBox* playerCurrentLocation;
     Types::GridBox* enemyCurrentLocation;
