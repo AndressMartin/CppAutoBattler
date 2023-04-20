@@ -3,7 +3,8 @@
 
 using namespace StatusEffects;
 
-BaseStatusEffect::BaseStatusEffect(Character& target): target(target)
+BaseStatusEffect::BaseStatusEffect(Character& target)
+: target(target)
 {
 }
 void BaseStatusEffect::Proc()

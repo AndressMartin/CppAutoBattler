@@ -10,7 +10,7 @@ namespace StatusEffects
 public:
         const int maxCounter = 2;
         const int bleedDamage = 30;
-        int counters;
+        int counter = 0;
         Bleed(Character& target);
         void Proc() override;
         std::unique_ptr<BaseStatusEffect> Clone(Character& newOwner) const override;

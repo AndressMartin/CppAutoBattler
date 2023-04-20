@@ -19,7 +19,7 @@ BattleField::BattleField()
     AllocateCharacter(playerCharacter);
     AllocateCharacter(enemyCharacter);
     grid->DrawBattlefield();
-    StartTurn();
+    HandleTurn();
 }
 
 BattleField::~BattleField() {
@@ -108,23 +108,24 @@ void BattleField::CreateEnemyCharacter()
     enemyCharacter->charName = "AI";
 }
 
-void BattleField::StartTurn()
+void BattleField::HandleTurn()
 {
+    cout << "----- TURN " << ++currentTurn << " -----\n";
     for (std::list<Character*>::iterator it = allPlayers->begin(); it != allPlayers->end(); ++it)
     {
         Character* character = *it;
         character->StartTurn(grid);
+        cout << '\n';
     }
 
-    currentTurn++;
-    HandleTurn();
+    HandleTurnEnd();
 }
 
-void BattleField::HandleTurn()
+void BattleField::HandleTurnEnd()
 {
     if (playerCharacter->isDead)
     {
-        cout << "You lost! :(\nTry again though, PS: Paladin is kinda broken!";
+        cout << "You lost! :(\nTry again! PS: Paladin is kinda broken!";
         return;
     }
     if (enemyCharacter->isDead)
@@ -138,8 +139,7 @@ void BattleField::HandleTurn()
     cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore any remaining input in the buffer
     cin.get();
     cout << "\n\n";
-    
-    StartTurn();
+    HandleTurn();
 }
 
 void BattleField::AllocateCharacter(Character* player)

@@ -48,7 +48,7 @@ public:
     AttackOutcome CalculateAttackOutcome();
     void ApplyRandomStatusEffect();
     void GetInflictedWithStatus(std::unique_ptr<BaseStatusEffect> status);
-    
+    void RemoveStatusEffect(BaseStatusEffect* effectToRemove);
     std::vector<std::unique_ptr<BaseStatusEffect>> statusEffects_canInflict;
     std::vector<std::unique_ptr<BaseStatusEffect>> statusEffects_inflicted;
 };

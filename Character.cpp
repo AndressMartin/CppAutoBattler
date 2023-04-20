@@ -42,6 +42,8 @@ constexpr int directions[][2] =
 
 void Character::TakeDamage(float amount)
 {
+    if(isDead)
+        return;
     cout << charName << "'s " <<Classes::StringifyCharacterClass[characterClass] << " took " << amount << " damage!\n";
     if ((health -= amount) <= 0)
     {
@@ -156,7 +158,7 @@ void Character::Attack(Character* target)
     int damage;
     bool successfulHit = true;
     int randomChance = Utils::GetRandomInt(0, 100);
-    bool canInflict = randomChance <= statusInflictChance;
+    bool canInflict = randomChance <= statusInflictChance && target->statusEffects_inflicted.empty();
     
     switch (outcome)
     {
@@ -165,38 +167,43 @@ void Character::Attack(Character* target)
             return;
         case AttackOutcome::Hit:
             damage = baseDamage;
-            cout << Classes::StringifyCharacterClass[characterClass] << " hits for " << damage << "!\n";
+            cout << Classes::StringifyCharacterClass[characterClass] << " hits for " << damage << ". ";
             successfulHit = true;
             break;
         case AttackOutcome::Crit:
             damage = ceil(baseDamage * critModifier);
-            cout << Classes::StringifyCharacterClass[characterClass] << " CRITS for " << damage << "!\n";
+            cout << Classes::StringifyCharacterClass[characterClass] << " CRITS for " << damage << "! ";
             successfulHit = true;
             break;
     }
 
     target->TakeDamage(damage);
 
-    if (successfulHit && canInflict)
+    if (successfulHit)
     {
-        if(!target->statusEffects_inflicted.empty())
+        if(canInflict)
         {
-            std::cout << Classes::StringifyCharacterClass[target->characterClass]<<" is already inflicted.\n";
-            return;
-        }
-
-        // Loop through the character's possible status effects
-        for (const Types::StatusEffect& effectType : statusEffects)
-        {
-            // Create the correct status effect instance
-            auto statusEffect = CreateStatusEffect(effectType, *this);
-
-            // Inflict the status effect on the target
-            if (statusEffect)
+            // Loop through the character's possible status effects
+            for (const Types::StatusEffect& effectType : statusEffects)
             {
-                statusEffect->Inflict(*target);
-                cout << Classes::StringifyCharacterClass[characterClass] << " inflicted " <<
-                    Types::StringifyStatusEffect[(int)effectType] << '\n';
+                // Create the correct status effect instance
+                auto statusEffect = CreateStatusEffect(effectType, *this);
+
+                // Inflict the status effect on the target
+                if (statusEffect)
+                {
+                    statusEffect->Inflict(*target);
+                    cout << charName << " inflicted " << Types::StringifyStatusEffect[(int)effectType]
+                    << " on " << target->charName <<".\n";
+                }
+            }
+        }
+        else
+        {
+            // Call Proc for status effects after the attack
+            for (auto& effect : statusEffects_inflicted)
+            {
+                effect->Proc();
             }
         }
     }
@@ -234,4 +241,16 @@ void Character::ApplyRandomStatusEffect()
 void Character::GetInflictedWithStatus(std::unique_ptr<BaseStatusEffect> status)
 {
     statusEffects_inflicted.push_back(std::move(status));
+}
+
+void Character::RemoveStatusEffect(BaseStatusEffect* effectToRemove)
+{
+    cout << charName << " is no longer afflicted.\n";
+    statusEffects_inflicted.erase(
+    std::remove_if(statusEffects_inflicted.begin(), statusEffects_inflicted.end(),
+        [&](const std::unique_ptr<BaseStatusEffect>& effect)
+        {
+            return effect.get() == effectToRemove;
+        }),
+    statusEffects_inflicted.end());
 }
