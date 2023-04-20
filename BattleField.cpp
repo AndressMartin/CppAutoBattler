@@ -127,6 +127,11 @@ void BattleField::HandleTurn()
 
 void BattleField::HandleTurnEnd()
 {
+    if (playerCharacter->isDead && enemyCharacter->isDead)
+    {
+        cout << "It's a tie! Both characters are dead!\n";
+        return;
+    }
     if (playerCharacter->isDead)
     {
         cout << "You lost! :(\nTry again! PS: Paladin is kinda broken!";
@@ -134,8 +139,7 @@ void BattleField::HandleTurnEnd()
     }
     if (enemyCharacter->isDead)
     {
-        cout << "You won! :]\n";
-        cout << "\n\n";
+        cout << "You won! :]\n\n";
         return;
     }
     
