@@ -1,12 +1,12 @@
+#include <list>
+#include <string>
+#include <iostream>
 #include "Grid.h"
 #include "BattleField.h"
 #include "Types.h"
 #include "Character.h"
 #include "Utils.h"
-#include <iostream>
 #include "BattleField.h"
-#include <list>
-#include <string>
 
 using namespace std;
 
@@ -57,6 +57,8 @@ int BattleField::GetPlayerChoice()
     int classChoice = 0;
     bool validChoice = false;
     int classesAmount = Classes::GetCharacterClassCount();
+    string input;
+    
     do
     {
         cout << "Choose Between One of these Classes:\n";
@@ -68,15 +70,51 @@ int BattleField::GetPlayerChoice()
                 cout << ", ";
             }
         }
-
-        cout << "\n";
-        cin >> classChoice;
-        classChoice--;
-
-        validChoice = IsValidClassChoice(classChoice, classesAmount);
+        
+        cout << "\nOr insert \"i\" to see their info.\n";
+        cin >> input;
+        
+        if (input == "i")
+        {
+            DisplayClassDescriptions();
+            cout << "Press Enter to return to the class selection menu.";
+            cin.ignore();
+            cin.get();
+        }
+        else
+        {
+            try
+            {
+                classChoice = stoi(input);
+                classChoice--;
+                validChoice = IsValidClassChoice(classChoice, classesAmount);
+            }
+            catch (const exception& e)
+            {
+                // Invalid input, continue the loop
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            }
+        }
     }
     while (!validChoice);
     return classChoice;
+}
+
+void BattleField::DisplayClassDescriptions()
+{
+    int classesAmount = Classes::GetCharacterClassCount();
+    static const Classes::ClassDatabase class_database;
+    
+    cout << "\nClass Descriptions:\n";
+    for (int i = 0; i < classesAmount; ++i)
+    {
+        const Classes::ClassAttributes& attributes = class_database.GetAttributes(static_cast<Classes::CharacterClass>(i));
+        cout << Classes::StringifyCharacterClass[i] << ": " << attributes.description << "\n\n";
+    }
+    cout << "Press Enter to go back to the class selection menu.\n";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cin.get();
 }
 
 bool BattleField::IsValidClassChoice(int choice, int classesAmount)

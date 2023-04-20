@@ -22,6 +22,7 @@ public:
     int numberOfPossibleTiles;
 
     void CreateBattlefield();
+    void DisplayClassDescriptions();
     void SetPlayers();
     bool IsValidClassChoice(int choice, int classesAmount);
     int GetPlayerChoice();
