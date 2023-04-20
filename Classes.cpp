@@ -56,8 +56,8 @@ namespace Classes
         attributes[Mage] =
         {
             60,
-            12,
-            3.0f,
+            10,
+            1.5f,
             12,
             2,
             '0',
