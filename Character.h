@@ -46,6 +46,7 @@ public:
     bool CanWalk(Grid* battlefield, int x, int y);
     void WalkTo(Grid* battlefield, int x, int y, Character* character);
     void HandleTurn(Grid* battlefield);
+    void ChooseAttackOrAbility(Grid* battlefield);
     bool CheckCloseTargets(Grid* battlefield);
     bool CheckDirections(Grid* battlefield, int x, int y);
     void Attack();

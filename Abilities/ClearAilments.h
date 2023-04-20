@@ -1,14 +1,13 @@
-﻿#include <iostream>
-#include "BaseSpecialAbility.h"
-#include "../Character.h"
+﻿#include "BaseSpecialAbility.h"
 
 class Character;
 
 namespace SpecialAbilities
 {
-    class Defend : public BaseSpecialAbility
+    class ClearAilments : public BaseSpecialAbility
     {
     public:
         void Execute(Character& user, Character& target, Grid* battlefield) override;
+        bool CanUse(Character& user, Character& target) override;
     };
 }

@@ -4,7 +4,7 @@ class Character;
 
 namespace SpecialAbilities
 {
-    class Knockback : public BaseSpecialAbility
+    class Multiattack : public BaseSpecialAbility
     {
     public:
         void Execute(Character& user, Character& target, Grid* battlefield) override;

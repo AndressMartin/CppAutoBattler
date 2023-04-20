@@ -1,8 +1,10 @@
 ﻿#include <memory>
 
 #include "BaseSpecialAbility.h"
-#include "Defend.h"
+#include "ClearAilments.h"
+#include "Heal.h"
 #include "Knockback.h"
+#include "Multiattack.h"
 #include "../Types.h"
 
 namespace SpecialAbilities
@@ -13,8 +15,12 @@ namespace SpecialAbilities
         {
             case Types::SpecialAbility::Knockback:
                 return std::make_unique<Knockback>();
-            case Types::SpecialAbility::Defend:
-                return std::make_unique<Defend>();
+            case Types::SpecialAbility::Heal:
+                return std::make_unique<Heal>();
+            case Types::SpecialAbility::ClearAilments:
+                return std::make_unique<ClearAilments>();
+            case Types::SpecialAbility::Multiattack:
+                return std::make_unique<Multiattack>();
             default:
                 return nullptr;
         }

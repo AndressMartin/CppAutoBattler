@@ -46,10 +46,11 @@ namespace Types
     enum class SpecialAbility
     {
         Knockback,
-        Defend,
         Heal,
         Teleport,
-        Evade,
+        ClearAilments,
+        Multiattack,
+        RunAndGun,
     };
     
     extern const char* StringifyStatusEffect[];

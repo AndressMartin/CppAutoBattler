@@ -10,7 +10,7 @@ namespace SpecialAbilities
     public:
         virtual ~BaseSpecialAbility() = default;
 
-        // The method to execute the special ability
         virtual void Execute(Character& user, Character& target, Grid* battlefield) = 0;
+        virtual bool CanUse(Character& user, Character& target) { return true; }
     };
 }

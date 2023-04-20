@@ -5,6 +5,8 @@
 #include <cmath>
 #include "Grid.h"
 #include "Character.h"
+
+#include "BattleField.h"
 #include "Types.h"
 #include "Utils.h"
 #include "Classes.h"
@@ -92,6 +94,7 @@ void Character::HandleTurn(Grid* battlefield)
 {
     if(target->isDead)
         return;
+    
     HandleStatusEffectsProc(ProcEvent::OnStartOfTurn);
 
     if(actionBlocked) //eg. Frozen Status
@@ -109,16 +112,8 @@ void Character::HandleTurn(Grid* battlefield)
             attackBlocked = false;
             return;
         }
-        
-        int chance = Utils::GetRandomInt(0, 100);
-        if (chance < abilityChance)
-        {
-            UseSpecialAbility(battlefield);
-        }
-        else
-        {
-            Attack();
-        }
+
+        ChooseAttackOrAbility(battlefield);
     }
     else //Calculates in which direction this character should move to be closer to a possible target
         {
@@ -151,6 +146,19 @@ void Character::HandleTurn(Grid* battlefield)
         battlefield->DrawBattlefield();
     }
     HandleStatusEffectsProc(ProcEvent::OnEndOfTurn);
+}
+
+void Character::ChooseAttackOrAbility(Grid* battlefield)
+{
+    int chance = Utils::GetRandomInt(0, 100);
+    if (chance < abilityChance)
+    {
+        UseSpecialAbility(battlefield);
+    }
+    else
+    {
+        Attack();
+    }
 }
 
 bool Character::CheckCloseTargets(Grid* battlefield)
@@ -274,12 +282,15 @@ void Character::HandleStatusEffectsProc(ProcEvent procEvent)
 
 void Character::UseSpecialAbility(Grid* battlefield)
 {
-    for (auto ability : specialAbilities)
+    int randomIndex = Utils::GetRandomInt_MaxExclusive(0, specialAbilities.size());
+    auto chosenAbility = specialAbilities[randomIndex];
+    auto abilityInstance = SpecialAbilities::CreateSpecialAbility(chosenAbility);
+    if (abilityInstance && abilityInstance->CanUse(*this, *target))
     {
-        auto abilityInstance = SpecialAbilities::CreateSpecialAbility(ability);
-        if (abilityInstance)
-        {
-            abilityInstance->Execute(*this, *target, battlefield);
-        }
+        abilityInstance->Execute(*this, *target, battlefield);
+    }
+    else
+    {
+        ChooseAttackOrAbility(battlefield);
     }
 }
