@@ -8,6 +8,7 @@
 #include "Types.h"
 #include "Utils.h"
 #include "Classes.h"
+#include "Abilities/SpecialAbilityFactory.h"
 #include "StatusEffects/StatusEffectFactory.h"
 
 using namespace std;
@@ -26,6 +27,7 @@ Character::Character(Classes::CharacterClass characterClass)
     this->critModifier = attributes.critMultiplier;
     this->critChance = attributes.critChance;
     this->statusEffects = attributes.statusEffects;
+    this->specialAbilities = attributes.specialAbilities;
     this->statusInflictChance = attributes.statusInflictChance;
     this->icon = attributes.icon;
 }
@@ -91,7 +93,17 @@ void Character::HandleTurn(Grid* battlefield)
         return;
     HandleStatusEffectsProc(ProcEvent::OnStartOfTurn);
     if (CheckCloseTargets(battlefield))
-        Attack();
+    {
+        int abilityChance = Utils::GetRandomInt(0, 100);
+        if (abilityChance < 20) // 20% chance to use the special ability
+        {
+            UseSpecialAbility();
+        }
+        else
+        {
+            Attack();
+        }
+    }
     else //Calculates in which direction this character should move to be closer to a possible target
         {
         int bestDirectionIndex = -1;
@@ -248,6 +260,18 @@ void Character::HandleStatusEffectsProc(ProcEvent procEvent)
         if (effect->ShouldProcOnEvent(procEvent))
         {
             effect->Proc();
+        }
+    }
+}
+
+void Character::UseSpecialAbility()
+{
+    for (auto ability : specialAbilities)
+    {
+        auto abilityInstance = SpecialAbilities::CreateSpecialAbility(ability);
+        if (abilityInstance)
+        {
+            abilityInstance->Execute(*this, *target);
         }
     }
 }

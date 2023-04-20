@@ -19,6 +19,7 @@ namespace Classes
         char icon;
         std::vector<Types::StatusEffect> statusEffects;
         int statusInflictChance;
+        std::vector<Types::SpecialAbility> specialAbilities;
         std::string description;
     };
 

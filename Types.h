@@ -42,7 +42,15 @@ namespace Types
         OnStartOfTurn,
         OnEndOfTurn,
     };
+
+    enum class SpecialAbility
+    {
+        Knockback,
+        Defend,
+        Heal,
+        Teleport,
+        Evade,
+    };
     
     extern const char* StringifyStatusEffect[];
-};
-
+}
