@@ -1,7 +1,5 @@
-﻿#include "Bleed.h"
-
-#include <iostream>
-
+﻿#include <iostream>
+#include "Bleed.h"
 #include "../Character.h"
 
 namespace StatusEffects
@@ -9,14 +7,16 @@ namespace StatusEffects
     Bleed::Bleed(Character& owner) : BaseStatusEffect(owner) {}
     void Bleed::Proc()
     {
+        if(target.isDead)
+            return;
         if(counter != maxCounter)
         {
             counter++;
-            std::cout << target.charName << " bleed counter " << counter <<"\n";
+            std::cout << target.charName << " bleeds with each blow...\n";
         }
         else
         {
-            std::cout << target.charName << " takes bleed damage!\n";
+            std::cout << target.charName << " takes bleed damage! ";
             counter = 0;
             target.TakeDamage(bleedDamage);
             target.RemoveStatusEffect(this);

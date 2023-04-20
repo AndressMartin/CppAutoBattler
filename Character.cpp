@@ -200,7 +200,7 @@ void Character::Attack(Character* target)
         }
         else
         {
-            // Call Proc for status effects after the attack
+            // Call Proc for status effects after successfully attacking
             for (auto& effect : statusEffects_inflicted)
             {
                 effect->Proc();

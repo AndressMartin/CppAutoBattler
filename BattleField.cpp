@@ -114,6 +114,8 @@ void BattleField::HandleTurn()
     for (std::list<Character*>::iterator it = allPlayers->begin(); it != allPlayers->end(); ++it)
     {
         Character* character = *it;
+        if(character->isDead)
+            continue;
         character->StartTurn(grid);
         cout << '\n';
     }
