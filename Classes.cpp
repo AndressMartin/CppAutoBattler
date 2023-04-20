@@ -100,7 +100,7 @@ namespace Classes
                 Types::SpecialAbility::Knockback,
             },
             50,
-            R"(Lowest health in the game but lots of maneuvers to block incoming attack. Very random effects.
+            R"(Lowest health but many maneuvers to block incoming attack. Very random effects.
             Hits from two squares away and inflicts two magical status effects.
             Actions: "Teleport" and "Knockback".)",
         };

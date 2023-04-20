@@ -6,6 +6,6 @@ namespace SpecialAbilities
 {
     void Heal::Execute(Character& user, Character& target, Grid* battlefield)
     {
-        user.Heal(user.baseDamage * 2);
+        user.Heal((user.baseDamage + user.damageModifiers) * 2);
     }
 }
