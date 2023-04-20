@@ -21,7 +21,8 @@ namespace Classes
                 Types::SpecialAbility::ClearAilments,
             },
             20,
-            R"(Inflicts "fearful" status, causing opponent to heal you instead.
+            R"(Good health and base damage. Strong and consistent.
+            Inflicts "fearful" status, causing opponent to heal you instead.
             Actions: "Heal", "Knockback" and "Clear Ailments".)",
         };
         attributes[Warrior] =
@@ -39,7 +40,8 @@ namespace Classes
                 Types::SpecialAbility::Multiattack,
             },
             30,
-            R"(Inflicts "bleeding" status, causing opponent to suffer heavy damage from blows.
+            R"(Aggressive and dependant on proccing their abilities. Can finish fights quickly.
+            Inflicts "bleeding" status, causing opponent to suffer heavy damage from blows.
             Actions: "Knockback" and "Multiattack".)",
         };
         attributes[Cleric] =
@@ -57,7 +59,8 @@ namespace Classes
                 Types::SpecialAbility::Intensify,
             },
             70,
-            R"(Inflicts "cursed" status, causing opponent to be haunted by ghosts.
+            R"(Highest health and lowest damage, but can snowball out of control if left unchecked.
+            Inflicts "cursed" status, causing opponent to be haunted by ghosts.
             Actions: "Heal" and "Intensify".)",
         };
         attributes[Archer] =
@@ -75,7 +78,8 @@ namespace Classes
                 Types::SpecialAbility::Multiattack,
             },
             60,
-            R"(Hits from three squares away and inflicts poison.
+            R"(Highly dependant on getting critical hits and multiattacks.
+            Hits from three squares away and inflicts poison.
             Actions: "Run And Gun" and "Multiattack".)",
         };
         attributes[Mage] =
@@ -96,7 +100,8 @@ namespace Classes
                 Types::SpecialAbility::Knockback,
             },
             50,
-            R"(Hits from two squares away and inflicts two magical status effects.
+            R"(Lowest health in the game but lots of maneuvers to block incoming attack. Very random effects.
+            Hits from two squares away and inflicts two magical status effects.
             Actions: "Teleport" and "Knockback".)",
         };
     }
