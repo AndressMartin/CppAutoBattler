@@ -14,7 +14,7 @@ namespace StatusEffects
         if(chance <= ghostChance)
         {
             std::cout << " ghosts gnaw at your soul... ";
-            target.TakeDamage(ghostDamage);
+            target.TakeDamage(curseDamage);
         }
     }
 

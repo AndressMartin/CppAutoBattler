@@ -20,6 +20,8 @@ public:
     ~Character();
 
     std::string charName;
+    char icon;
+
     int health;
     int baseDamage;
     float critModifier;
@@ -28,13 +30,14 @@ public:
     int statusInflictChance;
 
     bool isDead;
-    char icon;
+    bool attackBlocked;
     
     Character* target;
     Types::GridBox* currentBox;
     Classes::CharacterClass characterClass;
 
     void TakeDamage(float amount);
+    void Heal(float amount);
     int GetIndex(std::vector<Types::GridBox*> v, int index);
     void Die();
     bool CanWalk(Grid* battlefield, int x, int y);

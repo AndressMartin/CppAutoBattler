@@ -9,7 +9,7 @@ namespace StatusEffects
     {
         if(target.isDead)
             return;
-        std::cout << "Poison chips away at " << target.charName << "'s health...\n";
+        std::cout << "Poison chips away at " << target.charName << "'s health... ";
         target.TakeDamage(poisonDamage);
         if(counter < maxCounter)
             counter++;

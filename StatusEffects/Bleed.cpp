@@ -18,7 +18,7 @@ namespace StatusEffects
         {
             std::cout << target.charName << " takes bleed damage! ";
             counter = 0;
-            target.TakeDamage(zombieDamage);
+            target.TakeDamage(bleedDamage);
             target.RemoveStatusEffect(this);
         }
     }

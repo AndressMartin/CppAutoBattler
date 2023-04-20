@@ -8,7 +8,7 @@ namespace StatusEffects
     class Curse : public BaseStatusEffect
     {
     public:
-        const int ghostDamage = 10;
+        const int curseDamage = 10;
         const int ghostChance = 80;
         
         Curse(Character& target);

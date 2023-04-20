@@ -1,6 +1,7 @@
 ﻿#include "StatusEffectFactory.h"
 #include "Bleed.h"
 #include "Curse.h"
+#include "Fear.h"
 #include "Poison.h"
 #include "../Character.h"
 
@@ -18,6 +19,8 @@ namespace StatusEffects
             return std::make_unique<Poison>(owner);
         case StatusEffect::Cursed:
             return std::make_unique<Curse>(owner);
+        case StatusEffect::Fearful:
+            return std::make_unique<Fear>(owner);
         default:
             return nullptr;
         }

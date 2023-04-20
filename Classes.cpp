@@ -15,7 +15,7 @@ namespace Classes
             1,
             'P',
             {Types::StatusEffect::Fearful},
-            20,
+            30,
             "Can choose to heal themselves and choose to defend. Can inflict \"fearful\" status, causing opponent to heal you instead.",
         };
         attributes[Warrior] =
@@ -39,7 +39,7 @@ namespace Classes
             1,
             'C',
             {Types::StatusEffect::Cursed},
-            20,
+            30,
             "Can choose to heal themselves. Can inflict \"cursed\" status, making ghosts appear to hit the target.",
         };
         attributes[Archer] =
@@ -51,7 +51,7 @@ namespace Classes
             3,
             ')',
             {Types::StatusEffect::Poisoned},
-            50,
+            40,
             "Can hit from three squares away. High evasion rate. Can inflict poison.",
         };
         attributes[Mage] =

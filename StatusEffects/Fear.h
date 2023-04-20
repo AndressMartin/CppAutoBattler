@@ -5,14 +5,14 @@
 
 namespace StatusEffects
 {
-    class Bleed : public BaseStatusEffect
+    class Fear : public BaseStatusEffect
     {
-public:
-        const int bleedDamage = 25;
-        const int maxCounter = 2;
+    public:
+        const float healAmount = 0.75f;
+        const int maxCounter = 3;
         int counter = 0;
         
-        Bleed(Character& target);
+        Fear(Character& target);
         void Proc() override;
         std::unique_ptr<BaseStatusEffect> Clone(Character& newOwner) const override;
     };

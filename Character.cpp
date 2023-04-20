@@ -46,12 +46,20 @@ void Character::TakeDamage(float amount)
     if(isDead)
         return;
     health -= amount;
-    cout << charName << "'s " <<Classes::StringifyCharacterClass[characterClass] << " took " << amount << " damage!\n";
+    cout << charName << "'s " <<Classes::StringifyCharacterClass[characterClass] << " took " << amount << " damage.\n";
     HandleStatusEffectsProc(ProcEvent::OnTookDamage);
     if (health <= 0 && !isDead)
     {
         Die();
     }
+}
+
+void Character::Heal(float amount)
+{
+    if(isDead)
+        return;
+    health += amount;
+    cout << charName << "'s " <<Classes::StringifyCharacterClass[characterClass] << " heals " << amount << " health.\n";
 }
 
 void Character::Die()
@@ -166,7 +174,13 @@ void Character::Attack(Character* target)
     bool canInflict = randomChance <= statusInflictChance && target->statusEffects_inflicted.empty();
 
     HandleStatusEffectsProc(ProcEvent::OnAboutToAttack);
-    
+
+    if(attackBlocked)
+    {
+        attackBlocked = false;
+        return;
+    }
+
     switch (outcome)
     {
         case AttackOutcome::Miss:
