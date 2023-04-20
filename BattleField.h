@@ -27,7 +27,7 @@ public:
     int GetPlayerChoice();
     void CreatePlayerCharacter(int classIndex);
     void CreateEnemyCharacter();
-    void StartTurn();
     void HandleTurn();
+    void HandleTurnEnd();
     void AllocateCharacter(Character* player);
 };

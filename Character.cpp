@@ -6,25 +6,31 @@
 #include "Grid.h"
 #include "Character.h"
 #include "Types.h"
-#include "Character.h"
 #include "Utils.h"
 #include "Classes.h"
+#include "StatusEffects/StatusEffectFactory.h"
 
 using namespace std;
+using namespace StatusEffects;
+using namespace Types;
 
 Character::Character(Classes::CharacterClass characterClass)
 : characterClass(characterClass)
 {
-    static const Classes::ClassDatabase classDatabase;
-    const Classes::ClassAttributes& attributes = classDatabase.GetAttributes(characterClass);
+    static const Classes::ClassDatabase class_database;
+    const Classes::ClassAttributes& attributes = class_database.GetAttributes(characterClass);
 
     this->characterClass = characterClass;
     this->health = attributes.health;
     this->baseDamage = attributes.baseDamage;
     this->critModifier = attributes.critMultiplier;
     this->critChance = attributes.critChance;
+    this->statusEffects = attributes.statusEffects;
+    this->statusInflictChance = attributes.statusInflictChance;
     this->icon = attributes.icon;
 }
+
+Character::~Character() = default;
 
 constexpr int directions[][2] =
 {
@@ -34,32 +40,42 @@ constexpr int directions[][2] =
     {0, -1}  // UP
 };
 
-Character::~Character() = default;
-
 void Character::TakeDamage(float amount)
 {
-    cout << Classes::StringifyCharacterClass[characterClass] << " took " << amount << " damage!\n";
-    if ((health -= amount) <= 0)
+    if(isDead)
+        return;
+    health -= amount;
+    cout << charName << "'s " <<Classes::StringifyCharacterClass[characterClass] << " took " << amount << " damage.\n";
+    HandleStatusEffectsProc(ProcEvent::OnTookDamage);
+    if (health <= 0 && !isDead)
     {
         Die();
     }
 }
 
+void Character::Heal(float amount)
+{
+    if(isDead)
+        return;
+    health += amount;
+    cout << charName << "'s " <<Classes::StringifyCharacterClass[characterClass] << " heals " << amount << " health.\n";
+}
+
 void Character::Die()
 {
-    std::cout << Classes::StringifyCharacterClass[characterClass] << " is dead!\n";
+    cout << charName << "'s " <<Classes::StringifyCharacterClass[characterClass] << " is dead!\n";
     isDead = true;
 }
 
 bool Character::CanWalk(Grid* battlefield, int x, int y)
 {
-    Types::GridBox* gridBox = battlefield->GetGridBox(currentBox->xIndex + x, currentBox->yIndex + y);
+    GridBox* gridBox = battlefield->GetGridBox(currentBox->xIndex + x, currentBox->yIndex + y);
     return gridBox && !gridBox->occupied; //Already checks for nullPtr
 }
 
 void Character::WalkTo(Grid* battlefield, int x, int y)
 {
-    Types::GridBox* gridBox = battlefield->GetGridBox(currentBox->xIndex + x, currentBox->yIndex + y);
+    GridBox* gridBox = battlefield->GetGridBox(currentBox->xIndex + x, currentBox->yIndex + y);
     if (gridBox)
     {
         const auto tempPtr = currentBox->occupied;
@@ -69,18 +85,17 @@ void Character::WalkTo(Grid* battlefield, int x, int y)
     }
 }
 
-void Character::StartTurn(Grid* battlefield)
+void Character::HandleTurn(Grid* battlefield)
 {
     if(target->isDead)
         return;
+    HandleStatusEffectsProc(ProcEvent::OnStartOfTurn);
     if (CheckCloseTargets(battlefield))
-    {
-        Attack(target);
-    }
-    else // Calculates in which direction this character should move to be closer to a possible target
+        Attack();
+    else //Calculates in which direction this character should move to be closer to a possible target
         {
         int bestDirectionIndex = -1;
-        int bestDistance = INT_MAX; //Will be replaced by the distance found
+        int bestDistance = INT_MAX; //Replaced by the distance found
         
         for (int i = 0; i < 4; ++i) {
             const int newX = currentBox->xIndex + directions[i][0];
@@ -107,15 +122,13 @@ void Character::StartTurn(Grid* battlefield)
 
         battlefield->DrawBattlefield();
     }
+    HandleStatusEffectsProc(ProcEvent::OnEndOfTurn);
 }
 
 bool Character::CheckCloseTargets(Grid* battlefield)
 {
-
-    // std::cout << '\n' << currentBox->xIndex << ", " << currentBox->yIndex << '\n';
     for (const auto& direction : directions)
     {
-        // std::cout << "Directions: " << direction[0] << ", " << direction[1] << '\t';
         if (CheckDirections(battlefield, currentBox->xIndex + direction[0], currentBox->yIndex + direction[1]))
         {
             return true;
@@ -127,29 +140,32 @@ bool Character::CheckCloseTargets(Grid* battlefield)
 
 bool Character::CheckDirections(Grid* battlefield, int x, int y)
 {
-    //Already checks for nullPtr.
-    // std::cout << x << ", " << y << '\t';
     if (const auto gridBox = battlefield->GetGridBox(x, y))
     {
         if (gridBox->occupied)
         {
-            // std::cout << "Occupied\n";
             return true;
         }
-        // std::cout << "Free\n";
         return false;
     }
-    else
-    {
-        // std::cout << "INVALID\n";
-        return false;
-    }
+    return false;
 }
 
-void Character::Attack(Character* target)
+void Character::Attack()
 {
     AttackOutcome outcome = CalculateAttackOutcome();
-    int damage;
+    int damage = 0;
+    bool successfulHit = false;
+    int randomChance = Utils::GetRandomInt(0, 100);
+    bool canInflict = randomChance <= statusInflictChance && target->statusEffects_inflicted.empty();
+
+    HandleStatusEffectsProc(ProcEvent::OnAboutToAttack);
+
+    if(attackBlocked)
+    {
+        attackBlocked = false;
+        return;
+    }
 
     switch (outcome)
     {
@@ -158,15 +174,39 @@ void Character::Attack(Character* target)
             return;
         case AttackOutcome::Hit:
             damage = baseDamage;
-            cout << Classes::StringifyCharacterClass[characterClass] << " hits for " << damage << "!\n";
+            cout << Classes::StringifyCharacterClass[characterClass] << " hits for " << damage << ". ";
+            successfulHit = true;
             break;
         case AttackOutcome::Crit:
             damage = ceil(baseDamage * critModifier);
-            cout << Classes::StringifyCharacterClass[characterClass] << " CRITS for " << damage << "!\n";
+            cout << Classes::StringifyCharacterClass[characterClass] << " CRITS for " << damage << "! ";
+            successfulHit = true;
             break;
     }
 
     target->TakeDamage(damage);
+
+    if (successfulHit)
+    {
+        if(canInflict)
+        {
+            // Loop through the character's possible status effects
+            for (const StatusEffect& effectType : statusEffects)
+            {
+                // Create the correct status effect instance
+                auto statusEffect = CreateStatusEffect(effectType, *this);
+
+                // Inflict the status effect on the target
+                if (statusEffect)
+                {
+                    statusEffect->Inflict(*target);
+                    cout << charName << " inflicted " << StringifyStatusEffect[(int)effectType]
+                    << " on " << target->charName <<".\n";
+                }
+            }
+        }
+        HandleStatusEffectsProc(ProcEvent::OnSuccessfulAttack);
+    }
 }
 
 AttackOutcome Character::CalculateAttackOutcome()
@@ -182,4 +222,32 @@ AttackOutcome Character::CalculateAttackOutcome()
         return AttackOutcome::Hit;
     }
     return AttackOutcome::Crit;
+}
+
+void Character::GetInflictedWithStatus(std::unique_ptr<BaseStatusEffect> status)
+{
+    statusEffects_inflicted.push_back(std::move(status));
+}
+
+void Character::RemoveStatusEffect(BaseStatusEffect* effectToRemove)
+{
+    cout << charName << " is no longer afflicted.\n";
+    statusEffects_inflicted.erase(
+    std::remove_if(statusEffects_inflicted.begin(), statusEffects_inflicted.end(),
+        [&](const std::unique_ptr<BaseStatusEffect>& effect)
+        {
+            return effect.get() == effectToRemove;
+        }),
+    statusEffects_inflicted.end());
+}
+
+void Character::HandleStatusEffectsProc(ProcEvent procEvent)
+{
+    for (auto& effect : statusEffects_inflicted)
+    {
+        if (effect->ShouldProcOnEvent(procEvent))
+        {
+            effect->Proc();
+        }
+    }
 }

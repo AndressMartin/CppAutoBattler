@@ -19,7 +19,7 @@ BattleField::BattleField()
     AllocateCharacter(playerCharacter);
     AllocateCharacter(enemyCharacter);
     grid->DrawBattlefield();
-    StartTurn();
+    HandleTurn();
 }
 
 BattleField::~BattleField() {
@@ -95,8 +95,7 @@ void BattleField::CreatePlayerCharacter(int classIndex)
     cout << "Player Class Choice: " << Classes::StringifyCharacterClass[playerclass] << endl;
 
     playerCharacter = new Character(playerclass);
-    
-    cout << playerCharacter->health << endl << playerCharacter->baseDamage << endl << playerCharacter->playerIndex << endl; //TODO: Debugging
+    playerCharacter->charName = "Player";
 }
 
 void BattleField::CreateEnemyCharacter()
@@ -106,27 +105,29 @@ void BattleField::CreateEnemyCharacter()
     cout << "Enemy Class Choice: " << Classes::StringifyCharacterClass[enemyClass] << endl;
     
     enemyCharacter = new Character(enemyClass);
-
-    cout << enemyCharacter->health << endl << enemyCharacter->baseDamage << endl << enemyCharacter->playerIndex << endl; //TODO: Debugging
-}
-
-void BattleField::StartTurn()
-{
-    for (std::list<Character*>::iterator it = allPlayers->begin(); it != allPlayers->end(); ++it)
-    {
-        Character* character = *it;
-        character->StartTurn(grid);
-    }
-
-    currentTurn++;
-    HandleTurn();
+    enemyCharacter->charName = "AI";
 }
 
 void BattleField::HandleTurn()
 {
+    cout << "----- TURN " << ++currentTurn << " -----\n";
+    for (std::list<Character*>::iterator it = allPlayers->begin(); it != allPlayers->end(); ++it)
+    {
+        Character* character = *it;
+        if(character->isDead)
+            continue;
+        character->HandleTurn(grid);
+        cout << '\n';
+    }
+
+    HandleTurnEnd();
+}
+
+void BattleField::HandleTurnEnd()
+{
     if (playerCharacter->isDead)
     {
-        cout << "You lost! :(\nTry again though, PS: Paladin is kinda broken!";
+        cout << "You lost! :(\nTry again! PS: Paladin is kinda broken!";
         return;
     }
     if (enemyCharacter->isDead)
@@ -140,8 +141,7 @@ void BattleField::HandleTurn()
     cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore any remaining input in the buffer
     cin.get();
     cout << "\n\n";
-    
-    StartTurn();
+    HandleTurn();
 }
 
 void BattleField::AllocateCharacter(Character* player)

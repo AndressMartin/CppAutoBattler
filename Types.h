@@ -1,10 +1,11 @@
 #pragma once
 
+#define STRINGIFY( name ) #name
+
 class Character; //Forward declaration to avoid cyclical references with Character.h
 
-class Types
+namespace Types
 {
-public:
     struct GridBox
     {
         int xIndex;
@@ -22,4 +23,26 @@ public:
             return xIndex == other.xIndex && yIndex == other.yIndex && occupied == other.occupied && index == other.index;
         }
     };
+    
+    enum class StatusEffect
+    {
+        Poisoned,
+        Bleeding,
+        Cursed,
+        Fearful,
+        Burning,
+        Frozen,
+    };
+
+    enum class ProcEvent
+    {
+        OnSuccessfulAttack,
+        OnAboutToAttack,
+        OnTookDamage,
+        OnStartOfTurn,
+        OnEndOfTurn,
+    };
+    
+    extern const char* StringifyStatusEffect[];
 };
+
