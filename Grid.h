@@ -10,11 +10,12 @@ public:
 
     std::vector<std::vector<Types::GridBox*>> grids;
 
-    int xLength;
-    int yLength;
-
-    void DrawBattlefield();
     Types::GridBox* GetGridBox(int x, int y);
     int GetWidth() const;
     int GetHeight() const;
+    void DrawBattlefield();
+
+private:
+    int xLength;
+    int yLength;
 };

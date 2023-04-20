@@ -1,4 +1,5 @@
-﻿#include "BaseSpecialAbility.h"
+﻿#pragma once
+#include "BaseSpecialAbility.h"
 
 namespace SpecialAbilities
 {

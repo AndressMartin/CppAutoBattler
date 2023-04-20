@@ -1,7 +1,6 @@
+#include <iostream>
 #include "Grid.h"
 #include "Types.h"
-#include <iostream>
-
 #include "Character.h"
 
 Grid::Grid(const int lines, const int columns)
@@ -17,8 +16,7 @@ Grid::Grid(const int lines, const int columns)
     }
 }
 
-Grid::~Grid()
-= default;
+Grid::~Grid()= default;
 
 void Grid::DrawBattlefield()
 {

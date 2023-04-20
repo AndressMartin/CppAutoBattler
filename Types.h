@@ -2,7 +2,7 @@
 
 #define STRINGIFY( name ) #name
 
-class Character; //Forward declaration to avoid cyclical references with Character.h
+class Character;
 
 namespace Types
 {
@@ -15,8 +15,7 @@ namespace Types
 
         GridBox(const int x, const int y, Character* occupied, const int index)
         : xIndex(x), yIndex(y), occupied(occupied), index(index)
-        {
-        }
+        {}
 
         bool operator==(const GridBox& other) const
         {

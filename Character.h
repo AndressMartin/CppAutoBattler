@@ -46,7 +46,7 @@ public:
     bool CanWalk(Grid* battlefield, int x, int y);
     void WalkTo(Grid* battlefield, int x, int y, Character* character);
     void HandleTurn(Grid* battlefield);
-    void GetInflictedWithStatus(std::unique_ptr<StatusEffects::BaseStatusEffect> status);
+    void GetInflictedWithStatus(std::unique_ptr<StatusEffects::BaseStatusEffect>&& status);
     void RemoveStatusEffect(StatusEffects::BaseStatusEffect* effectToRemove);
 private:
     std::vector<Types::StatusEffect> statusEffects;

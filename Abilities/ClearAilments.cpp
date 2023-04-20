@@ -7,14 +7,13 @@ namespace SpecialAbilities
     void ClearAilments::Execute(Character& user, Character& target, Grid* battlefield)
     {
         std::cout << user.charName << " will clear the body of curses and ailments.\n";
-        // Store the pointers to status effects in a separate container
+        // Store the pointers to status effects first
         std::vector<StatusEffects::BaseStatusEffect*> effectsToRemove;
         for (auto& effect : user.statusEffects_inflicted)
         {
             effectsToRemove.push_back(effect.get());
         }
 
-        // Remove the status effects
         for (auto effect : effectsToRemove)
         {
             user.RemoveStatusEffect(effect);
