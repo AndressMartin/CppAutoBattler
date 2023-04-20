@@ -24,6 +24,7 @@ public:
 
     int health;
     int baseDamage;
+    int damageModifiers;
     float critModifier;
     int critChance;
     std::vector<Types::StatusEffect> statusEffects;

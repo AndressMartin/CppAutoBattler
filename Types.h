@@ -51,6 +51,7 @@ namespace Types
         ClearAilments,
         Multiattack,
         RunAndGun,
+        Intensify,
     };
     
     extern const char* StringifyStatusEffect[];

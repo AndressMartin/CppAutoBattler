@@ -49,3 +49,13 @@ Types::GridBox* Grid::GetGridBox(int x, int y)
 
     return grids[y][x];
 }
+
+int Grid::GetWidth() const
+{
+    return xLength;
+}
+
+int Grid::GetHeight() const
+{
+    return yLength;
+}

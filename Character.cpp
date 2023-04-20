@@ -5,8 +5,6 @@
 #include <cmath>
 #include "Grid.h"
 #include "Character.h"
-
-#include "BattleField.h"
 #include "Types.h"
 #include "Utils.h"
 #include "Classes.h"
@@ -96,6 +94,9 @@ void Character::HandleTurn(Grid* battlefield)
         return;
     
     HandleStatusEffectsProc(ProcEvent::OnStartOfTurn);
+    
+    if(target->isDead) //Repeated due to status timing
+        return;
 
     if(actionBlocked) //eg. Frozen Status
     {
@@ -190,7 +191,7 @@ bool Character::CheckDirections(Grid* battlefield, int x, int y)
 void Character::Attack()
 {
     AttackOutcome outcome = CalculateAttackOutcome();
-    int damage = 0;
+    int damage = baseDamage + damageModifiers;
     bool successfulHit = false;
     int randomChance = Utils::GetRandomInt(0, 100);
     bool canInflict = randomChance <= statusInflictChance && target->statusEffects_inflicted.empty();
@@ -201,17 +202,15 @@ void Character::Attack()
             cout << Classes::StringifyCharacterClass[characterClass] << " missed!\n";
             return;
         case AttackOutcome::Hit:
-            damage = baseDamage;
             cout << Classes::StringifyCharacterClass[characterClass] << " hits for " << damage << ". ";
             successfulHit = true;
             break;
         case AttackOutcome::Crit:
-            damage = ceil(baseDamage * critModifier);
+            damage = ceil(damage * critModifier);
             cout << Classes::StringifyCharacterClass[characterClass] << " CRITS for " << damage << "! ";
             successfulHit = true;
             break;
     }
-
     target->TakeDamage(damage);
 
     if (successfulHit)

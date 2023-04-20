@@ -3,8 +3,11 @@
 #include "BaseSpecialAbility.h"
 #include "ClearAilments.h"
 #include "Heal.h"
+#include "Intensify.h"
 #include "Knockback.h"
 #include "Multiattack.h"
+#include "RunAndGun.h"
+#include "Teleport.h"
 #include "../Types.h"
 
 namespace SpecialAbilities
@@ -21,8 +24,12 @@ namespace SpecialAbilities
                 return std::make_unique<ClearAilments>();
             case Types::SpecialAbility::Multiattack:
                 return std::make_unique<Multiattack>();
-            default:
-                return nullptr;
+            case Types::SpecialAbility::Teleport:
+                return std::make_unique<Teleport>();
+            case Types::SpecialAbility::RunAndGun:
+                return std::make_unique<RunAndGun>();
+            case Types::SpecialAbility::Intensify:
+                return std::make_unique<Intensify>();
         }
     }
 }
