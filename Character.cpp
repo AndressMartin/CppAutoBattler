@@ -257,7 +257,7 @@ AttackOutcome Character::CalculateAttackOutcome()
     return AttackOutcome::Crit;
 }
 
-void Character::GetInflictedWithStatus(std::unique_ptr<BaseStatusEffect> status)
+void Character::GetInflictedWithStatus(unique_ptr<BaseStatusEffect>&& status)
 {
     statusEffects_inflicted.push_back(std::move(status));
 }

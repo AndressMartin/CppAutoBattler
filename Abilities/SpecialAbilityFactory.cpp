@@ -31,5 +31,6 @@ namespace SpecialAbilities
             case Types::SpecialAbility::Intensify:
                 return std::make_unique<Intensify>();
         }
+        return nullptr;
     }
 }

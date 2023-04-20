@@ -12,13 +12,15 @@ namespace StatusEffects
     class BaseStatusEffect
     {
     public:
-        Character& target;
-        std::vector<Types::ProcEvent> procEvents;
-        
         BaseStatusEffect(Character& target, std::vector<Types::ProcEvent> events);
+        
         virtual void Proc() = 0;
-        virtual std::unique_ptr<BaseStatusEffect> Clone(Character& newOwner) const = 0;
         bool ShouldProcOnEvent(Types::ProcEvent event) const;
         void Inflict(Character& target);
+    protected:
+        Character& target;
+        std::vector<Types::ProcEvent> procEvents;
+    private:
+        virtual std::unique_ptr<BaseStatusEffect> Clone(Character& newOwner) const = 0;
     };
 }

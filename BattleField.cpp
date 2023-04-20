@@ -172,7 +172,7 @@ void BattleField::HandleTurnEnd()
     }
     if (playerCharacter->isDead)
     {
-        cout << "You lost! :(\nTry again! PS: Paladin is kinda broken!";
+        cout << "You lost. :(\nTry again!\n";
         return;
     }
     if (enemyCharacter->isDead)
@@ -196,7 +196,6 @@ void BattleField::AllocateCharacter(Character* player)
     Types::GridBox* randomLocation = grid->grids[randomRow][randomCol];
     if (!randomLocation->occupied)
     {
-        playerCurrentLocation = randomLocation;
         randomLocation->occupied = player;
         player->currentBox = randomLocation;
         return;

@@ -1,25 +1,19 @@
 #pragma once
 #include "Character.h"
-#include "Types.h"
 #include <list>
-#include <iostream>
 #include "Grid.h"
-
-using namespace std;
 
 class BattleField
 {
 public:
     BattleField();
     ~BattleField();
+private:
     Grid* grid;
-    Types::GridBox* playerCurrentLocation;
-    Types::GridBox* enemyCurrentLocation;
-    list<Character*>* allPlayers;
+    std::list<Character*>* allPlayers;
     Character* playerCharacter;
     Character* enemyCharacter;
     int currentTurn;
-    int numberOfPossibleTiles;
 
     void CreateBattlefield();
     void DisplayClassDescriptions();
