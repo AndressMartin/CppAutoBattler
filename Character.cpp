@@ -13,6 +13,7 @@
 
 using namespace std;
 using namespace StatusEffects;
+using namespace Types;
 
 Character::Character(Classes::CharacterClass characterClass)
 : characterClass(characterClass)
@@ -46,7 +47,7 @@ void Character::TakeDamage(float amount)
         return;
     health -= amount;
     cout << charName << "'s " <<Classes::StringifyCharacterClass[characterClass] << " took " << amount << " damage!\n";
-    HandleStatusEffectsProc(Types::ProcEvent::OnTookDamage);
+    HandleStatusEffectsProc(ProcEvent::OnTookDamage);
     if (health <= 0 && !isDead)
     {
         Die();
@@ -61,13 +62,13 @@ void Character::Die()
 
 bool Character::CanWalk(Grid* battlefield, int x, int y)
 {
-    Types::GridBox* gridBox = battlefield->GetGridBox(currentBox->xIndex + x, currentBox->yIndex + y);
+    GridBox* gridBox = battlefield->GetGridBox(currentBox->xIndex + x, currentBox->yIndex + y);
     return gridBox && !gridBox->occupied; //Already checks for nullPtr
 }
 
 void Character::WalkTo(Grid* battlefield, int x, int y)
 {
-    Types::GridBox* gridBox = battlefield->GetGridBox(currentBox->xIndex + x, currentBox->yIndex + y);
+    GridBox* gridBox = battlefield->GetGridBox(currentBox->xIndex + x, currentBox->yIndex + y);
     if (gridBox)
     {
         const auto tempPtr = currentBox->occupied;
@@ -81,6 +82,7 @@ void Character::HandleTurn(Grid* battlefield)
 {
     if(target->isDead)
         return;
+    HandleStatusEffectsProc(ProcEvent::OnStartOfTurn);
     if (CheckCloseTargets(battlefield))
     {
         Attack(target);
@@ -115,7 +117,7 @@ void Character::HandleTurn(Grid* battlefield)
 
         battlefield->DrawBattlefield();
     }
-    HandleStatusEffectsProc(Types::ProcEvent::OnEndOfTurn);
+    HandleStatusEffectsProc(ProcEvent::OnEndOfTurn);
 }
 
 bool Character::CheckCloseTargets(Grid* battlefield)
@@ -163,7 +165,7 @@ void Character::Attack(Character* target)
     int randomChance = Utils::GetRandomInt(0, 100);
     bool canInflict = randomChance <= statusInflictChance && target->statusEffects_inflicted.empty();
 
-    HandleStatusEffectsProc(Types::ProcEvent::OnAboutToAttack);
+    HandleStatusEffectsProc(ProcEvent::OnAboutToAttack);
     
     switch (outcome)
     {
@@ -189,7 +191,7 @@ void Character::Attack(Character* target)
         if(canInflict)
         {
             // Loop through the character's possible status effects
-            for (const Types::StatusEffect& effectType : statusEffects)
+            for (const StatusEffect& effectType : statusEffects)
             {
                 // Create the correct status effect instance
                 auto statusEffect = CreateStatusEffect(effectType, *this);
@@ -198,12 +200,12 @@ void Character::Attack(Character* target)
                 if (statusEffect)
                 {
                     statusEffect->Inflict(*target);
-                    cout << charName << " inflicted " << Types::StringifyStatusEffect[(int)effectType]
+                    cout << charName << " inflicted " << StringifyStatusEffect[(int)effectType]
                     << " on " << target->charName <<".\n";
                 }
             }
         }
-        HandleStatusEffectsProc(Types::ProcEvent::OnSuccessfulAttack);
+        HandleStatusEffectsProc(ProcEvent::OnSuccessfulAttack);
     }
 }
 
@@ -253,7 +255,7 @@ void Character::RemoveStatusEffect(BaseStatusEffect* effectToRemove)
     statusEffects_inflicted.end());
 }
 
-void Character::HandleStatusEffectsProc(Types::ProcEvent procEvent)
+void Character::HandleStatusEffectsProc(ProcEvent procEvent)
 {
     for (auto& effect : statusEffects_inflicted)
     {

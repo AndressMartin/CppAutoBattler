@@ -9,7 +9,7 @@ namespace StatusEffects
     {
         if(target.isDead)
             return;
-        if(counter != maxCounter)
+        if(counter < maxCounter)
         {
             counter++;
             std::cout << target.charName << " bleeds with each blow...\n";
@@ -18,7 +18,7 @@ namespace StatusEffects
         {
             std::cout << target.charName << " takes bleed damage! ";
             counter = 0;
-            target.TakeDamage(bleedDamage);
+            target.TakeDamage(zombieDamage);
             target.RemoveStatusEffect(this);
         }
     }

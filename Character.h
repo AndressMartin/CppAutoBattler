@@ -6,8 +6,6 @@
 #include "Types.h"
 #include "StatusEffects/BaseStatusEffect.h"
 
-using namespace StatusEffects;
-
 enum class AttackOutcome
 {
     Miss,
@@ -47,9 +45,9 @@ public:
     void Attack(Character* target);
     AttackOutcome CalculateAttackOutcome();
     void ApplyRandomStatusEffect();
-    void GetInflictedWithStatus(std::unique_ptr<BaseStatusEffect> status);
-    void RemoveStatusEffect(BaseStatusEffect* effectToRemove);
+    void GetInflictedWithStatus(std::unique_ptr<StatusEffects::BaseStatusEffect> status);
+    void RemoveStatusEffect(StatusEffects::BaseStatusEffect* effectToRemove);
     void HandleStatusEffectsProc(Types::ProcEvent procEvent);
-    std::vector<std::unique_ptr<BaseStatusEffect>> statusEffects_canInflict;
-    std::vector<std::unique_ptr<BaseStatusEffect>> statusEffects_inflicted;
+    std::vector<std::unique_ptr<StatusEffects::BaseStatusEffect>> statusEffects_canInflict;
+    std::vector<std::unique_ptr<StatusEffects::BaseStatusEffect>> statusEffects_inflicted;
 };

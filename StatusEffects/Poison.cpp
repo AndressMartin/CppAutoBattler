@@ -11,6 +11,10 @@ namespace StatusEffects
             return;
         std::cout << "Poison chips away at " << target.charName << "'s health...\n";
         target.TakeDamage(poisonDamage);
+        if(counter < maxCounter)
+            counter++;
+        else
+            target.RemoveStatusEffect(this);
     }
     std::unique_ptr<BaseStatusEffect> Poison::Clone(Character& newOwner) const
     {

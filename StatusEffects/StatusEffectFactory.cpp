@@ -1,18 +1,23 @@
 ﻿#include "StatusEffectFactory.h"
 #include "Bleed.h"
+#include "Curse.h"
 #include "Poison.h"
 #include "../Character.h"
 
+using namespace Types;
+
 namespace StatusEffects
 {
-    std::unique_ptr<BaseStatusEffect> CreateStatusEffect(Types::StatusEffect effectType, Character& owner)
+    std::unique_ptr<BaseStatusEffect> CreateStatusEffect(StatusEffect effectType, Character& owner)
     {
         switch (effectType)
         {
-        case Types::StatusEffect::Bleeding:
+        case StatusEffect::Bleeding:
             return std::make_unique<Bleed>(owner);
-        case Types::StatusEffect::Poisoned:
+        case StatusEffect::Poisoned:
             return std::make_unique<Poison>(owner);
+        case StatusEffect::Cursed:
+            return std::make_unique<Curse>(owner);
         default:
             return nullptr;
         }
