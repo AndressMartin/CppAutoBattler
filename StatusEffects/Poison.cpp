@@ -1,8 +1,15 @@
 ﻿#include "Poison.h"
+#include "../Character.h"
 
 namespace StatusEffects
 {
-    void Poison::Inflict(Character& target) {
-        // Inflict poison damage to the target
+    Poison::Poison(Character& owner) : BaseStatusEffect(owner) {}
+    void Poison::Proc()
+    {
+        
+    }
+    std::unique_ptr<BaseStatusEffect> Poison::Clone(Character& newOwner) const
+    {
+        return std::make_unique<Poison>(newOwner);
     }
 }

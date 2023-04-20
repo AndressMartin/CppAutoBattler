@@ -220,6 +220,7 @@
         </ClCompile>
         <ClCompile Include="StatusEffects\Bleed.cpp" />
         <ClCompile Include="StatusEffects\Poison.cpp" />
+        <ClCompile Include="StatusEffects\StatusEffectFactory.cpp" />
         <ClCompile Include="Types.cpp" />
         <ClCompile Include="Utils.cpp" />
     </ItemGroup>
@@ -231,6 +232,7 @@
         <ClInclude Include="StatusEffects\BaseStatusEffect.h" />
         <ClInclude Include="StatusEffects\Bleed.h" />
         <ClInclude Include="StatusEffects\Poison.h" />
+        <ClInclude Include="StatusEffects\StatusEffectFactory.h" />
         <ClInclude Include="Types.h" />
         <ClInclude Include="Utils.h" />
     </ItemGroup>

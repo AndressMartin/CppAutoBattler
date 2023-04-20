@@ -9,8 +9,10 @@
 #include "Character.h"
 #include "Utils.h"
 #include "Classes.h"
+#include "StatusEffects/StatusEffectFactory.h"
 
 using namespace std;
+using namespace StatusEffects;
 
 Character::Character(Classes::CharacterClass characterClass)
 : characterClass(characterClass)
@@ -23,6 +25,8 @@ Character::Character(Classes::CharacterClass characterClass)
     this->baseDamage = attributes.baseDamage;
     this->critModifier = attributes.critMultiplier;
     this->critChance = attributes.critChance;
+    this->statusEffects = attributes.statusEffects;
+    this->statusInflictChance = attributes.statusInflictChance;
     this->icon = attributes.icon;
 }
 
@@ -38,7 +42,7 @@ constexpr int directions[][2] =
 
 void Character::TakeDamage(float amount)
 {
-    cout << Classes::StringifyCharacterClass[characterClass] << " took " << amount << " damage!\n";
+    cout << charName << "'s " <<Classes::StringifyCharacterClass[characterClass] << " took " << amount << " damage!\n";
     if ((health -= amount) <= 0)
     {
         Die();
@@ -47,7 +51,7 @@ void Character::TakeDamage(float amount)
 
 void Character::Die()
 {
-    std::cout << Classes::StringifyCharacterClass[characterClass] << " is dead!\n";
+    cout << charName << "'s " <<Classes::StringifyCharacterClass[characterClass] << " is dead!\n";
     isDead = true;
 }
 
@@ -150,7 +154,10 @@ void Character::Attack(Character* target)
 {
     AttackOutcome outcome = CalculateAttackOutcome();
     int damage;
-
+    bool successfulHit = true;
+    int randomChance = Utils::GetRandomInt(0, 100);
+    bool canInflict = randomChance <= statusInflictChance;
+    
     switch (outcome)
     {
         case AttackOutcome::Miss:
@@ -159,14 +166,40 @@ void Character::Attack(Character* target)
         case AttackOutcome::Hit:
             damage = baseDamage;
             cout << Classes::StringifyCharacterClass[characterClass] << " hits for " << damage << "!\n";
+            successfulHit = true;
             break;
         case AttackOutcome::Crit:
             damage = ceil(baseDamage * critModifier);
             cout << Classes::StringifyCharacterClass[characterClass] << " CRITS for " << damage << "!\n";
+            successfulHit = true;
             break;
     }
 
     target->TakeDamage(damage);
+
+    if (successfulHit && canInflict)
+    {
+        if(!target->statusEffects_inflicted.empty())
+        {
+            std::cout << Classes::StringifyCharacterClass[target->characterClass]<<" is already inflicted.\n";
+            return;
+        }
+
+        // Loop through the character's possible status effects
+        for (const Types::StatusEffect& effectType : statusEffects)
+        {
+            // Create the correct status effect instance
+            auto statusEffect = CreateStatusEffect(effectType, *this);
+
+            // Inflict the status effect on the target
+            if (statusEffect)
+            {
+                statusEffect->Inflict(*target);
+                cout << Classes::StringifyCharacterClass[characterClass] << " inflicted " <<
+                    Types::StringifyStatusEffect[(int)effectType] << '\n';
+            }
+        }
+    }
 }
 
 AttackOutcome Character::CalculateAttackOutcome()
@@ -182,4 +215,23 @@ AttackOutcome Character::CalculateAttackOutcome()
         return AttackOutcome::Hit;
     }
     return AttackOutcome::Crit;
+}
+
+void Character::ApplyRandomStatusEffect()
+{
+    if (statusEffects_canInflict.empty())
+    {
+        std::cout << "No status effects available to inflict.\n";
+        return;
+    }
+
+    int randomIndex = Utils::GetRandomInt_MaxExclusive(0, statusEffects_canInflict.size());
+
+    BaseStatusEffect& randomEffect = *statusEffects_canInflict[randomIndex];
+    randomEffect.Inflict(*target);
+}
+
+void Character::GetInflictedWithStatus(std::unique_ptr<BaseStatusEffect> status)
+{
+    statusEffects_inflicted.push_back(std::move(status));
 }

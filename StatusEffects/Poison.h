@@ -4,8 +4,11 @@
 
 namespace StatusEffects
 {
-    class Poison : public BaseStatusEffect {
-    public:
-        void Inflict(Character& target) override;
+    class Poison : public BaseStatusEffect
+    {
+public:
+        Poison(Character& target);
+        void Proc() override;
+        std::unique_ptr<BaseStatusEffect> Clone(Character& newOwner) const override;
     };
 }
