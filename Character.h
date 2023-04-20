@@ -41,7 +41,7 @@ public:
     void Die();
     bool CanWalk(Grid* battlefield, int x, int y);
     void WalkTo(Grid* battlefield, int x, int y);
-    void StartTurn(Grid* battlefield);
+    void HandleTurn(Grid* battlefield);
     bool CheckCloseTargets(Grid* battlefield);
     bool CheckDirections(Grid* battlefield, int x, int y);
     void Attack(Character* target);
@@ -49,6 +49,7 @@ public:
     void ApplyRandomStatusEffect();
     void GetInflictedWithStatus(std::unique_ptr<BaseStatusEffect> status);
     void RemoveStatusEffect(BaseStatusEffect* effectToRemove);
+    void HandleStatusEffectsProc(Types::ProcEvent procEvent);
     std::vector<std::unique_ptr<BaseStatusEffect>> statusEffects_canInflict;
     std::vector<std::unique_ptr<BaseStatusEffect>> statusEffects_inflicted;
 };

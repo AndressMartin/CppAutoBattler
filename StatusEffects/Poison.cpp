@@ -4,7 +4,7 @@
 
 namespace StatusEffects
 {
-    Poison::Poison(Character& owner) : BaseStatusEffect(owner) {}
+    Poison::Poison(Character& target) : BaseStatusEffect(target, {Types::ProcEvent::OnEndOfTurn}) {}
     void Poison::Proc()
     {
         if(target.isDead)

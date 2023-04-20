@@ -44,8 +44,10 @@ void Character::TakeDamage(float amount)
 {
     if(isDead)
         return;
+    health -= amount;
     cout << charName << "'s " <<Classes::StringifyCharacterClass[characterClass] << " took " << amount << " damage!\n";
-    if ((health -= amount) <= 0)
+    HandleStatusEffectsProc(Types::ProcEvent::OnTookDamage);
+    if (health <= 0 && !isDead)
     {
         Die();
     }
@@ -75,7 +77,7 @@ void Character::WalkTo(Grid* battlefield, int x, int y)
     }
 }
 
-void Character::StartTurn(Grid* battlefield)
+void Character::HandleTurn(Grid* battlefield)
 {
     if(target->isDead)
         return;
@@ -113,6 +115,7 @@ void Character::StartTurn(Grid* battlefield)
 
         battlefield->DrawBattlefield();
     }
+    HandleStatusEffectsProc(Types::ProcEvent::OnEndOfTurn);
 }
 
 bool Character::CheckCloseTargets(Grid* battlefield)
@@ -156,9 +159,11 @@ void Character::Attack(Character* target)
 {
     AttackOutcome outcome = CalculateAttackOutcome();
     int damage;
-    bool successfulHit = true;
+    bool successfulHit;
     int randomChance = Utils::GetRandomInt(0, 100);
     bool canInflict = randomChance <= statusInflictChance && target->statusEffects_inflicted.empty();
+
+    HandleStatusEffectsProc(Types::ProcEvent::OnAboutToAttack);
     
     switch (outcome)
     {
@@ -198,14 +203,7 @@ void Character::Attack(Character* target)
                 }
             }
         }
-        else
-        {
-            // Call Proc for status effects after successfully attacking
-            for (auto& effect : statusEffects_inflicted)
-            {
-                effect->Proc();
-            }
-        }
+        HandleStatusEffectsProc(Types::ProcEvent::OnSuccessfulAttack);
     }
 }
 
@@ -253,4 +251,15 @@ void Character::RemoveStatusEffect(BaseStatusEffect* effectToRemove)
             return effect.get() == effectToRemove;
         }),
     statusEffects_inflicted.end());
+}
+
+void Character::HandleStatusEffectsProc(Types::ProcEvent procEvent)
+{
+    for (auto& effect : statusEffects_inflicted)
+    {
+        if (effect->ShouldProcOnEvent(procEvent))
+        {
+            effect->Proc();
+        }
+    }
 }

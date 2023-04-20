@@ -4,7 +4,7 @@
 
 namespace StatusEffects
 {
-    Bleed::Bleed(Character& owner) : BaseStatusEffect(owner) {}
+    Bleed::Bleed(Character& target) : BaseStatusEffect(target, {Types::ProcEvent::OnTookDamage}) {}
     void Bleed::Proc()
     {
         if(target.isDead)

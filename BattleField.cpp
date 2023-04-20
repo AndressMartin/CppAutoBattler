@@ -116,7 +116,7 @@ void BattleField::HandleTurn()
         Character* character = *it;
         if(character->isDead)
             continue;
-        character->StartTurn(grid);
+        character->HandleTurn(grid);
         cout << '\n';
     }
 

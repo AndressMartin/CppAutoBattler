@@ -35,6 +35,15 @@ namespace Types
         Frozen,
     };
 
+    enum class ProcEvent
+    {
+        OnSuccessfulAttack,
+        OnAboutToAttack,
+        OnTookDamage,
+        OnStartOfTurn,
+        OnEndOfTurn,
+    };
+    
     extern const char* StringifyStatusEffect[];
 };
 
