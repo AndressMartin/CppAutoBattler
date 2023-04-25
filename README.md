@@ -2,9 +2,7 @@
 This application is an auto-battler RPG with a grid with cells/tiles/boxes organized as a matrix. It is meant as a simple C++ test for practice. 
 
 ### Grid
-The grid has no min or max values. Please don’t insert negative or absurd numbers.
-
-With that said, it is dynamic. The user generates the size of grid that they want. Some character classes are stronger in big arenas, others in smaller arenas.
+The grid is dynamic. The user generates the desired grid size at the start.
 
 ### Turn-based Actions
 #### Movement
